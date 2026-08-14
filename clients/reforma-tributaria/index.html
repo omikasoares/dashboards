@@ -394,6 +394,7 @@ body{ min-height:100vh }
 /* ── WEBHOOKS (n8n) ── */
 const MATRICULAS_WEBHOOK_URL = 'https://webhook.autz.com.br/webhook/cplay-matriculas';
 const FATURAMENTO_WEBHOOK_URL = 'https://webhook.autz.com.br/webhook/cplay-faturamento';
+const OUTROS_CUSTOS_WEBHOOK_URL = 'https://webhook.autz.com.br/webhook/cplay-custos';
 const CAMPANHAS_DIM_URL = 'https://webhook.autz.com.br/webhook/campanhas-cplay-dim';
 const CAMPANHAS_FACT_URL = 'https://webhook.autz.com.br/webhook/campanhas-cplay-fact';
 const PRODUCT_TOUR = 'apuracao_assistida';
@@ -473,9 +474,10 @@ async function fetchWebhookJson(url) {
 
 /* ── MONTA OS DADOS DO DASHBOARD (antes era Apps Script / getDashboardData) ── */
 async function getDashboardData() {
-  const [matriculaRows, faturamentoRows, dimRows, factRows] = await Promise.all([
+  const [matriculaRows, faturamentoRows, custosRows, dimRows, factRows] = await Promise.all([
     fetchWebhookJson(MATRICULAS_WEBHOOK_URL),
     fetchWebhookJson(FATURAMENTO_WEBHOOK_URL),
+    fetchWebhookJson(OUTROS_CUSTOS_WEBHOOK_URL),
     fetchWebhookJson(CAMPANHAS_DIM_URL),
     fetchWebhookJson(CAMPANHAS_FACT_URL),
   ]);
@@ -488,6 +490,11 @@ async function getDashboardData() {
   const faturamentoPorCidade = {};
   faturamentoRows.forEach(function(r) {
     if (r.city) faturamentoPorCidade[norm(r.city)] = Number(r.faturamento) || 0;
+  });
+
+  const outrosCustosPorCidade = {};
+  custosRows.forEach(function(r) {
+    if (r.city) outrosCustosPorCidade[norm(r.city)] = Number(r.outrosCustos) || 0;
   });
 
   const dimById = {};
@@ -513,6 +520,7 @@ async function getDashboardData() {
     const enrolled = matriculasPorCidade[key] || 0;
     const linked = matriculasPorCidade[key] !== undefined;
     const faturamento = faturamentoPorCidade[key] || 0;
+    const outrosCustos = outrosCustosPorCidade[key] || 0;
     const capacity = CITY_CAPACITY[ev.city] !== undefined ? CITY_CAPACITY[ev.city] : DEFAULT_CAPACITY;
 
     const ads = investimentoPorCidade[key];
@@ -525,7 +533,7 @@ async function getDashboardData() {
     const eventDate = new Date(y, m - 1, d);
     const daysUntil = Math.round((eventDate - todayMidnight) / 86400000);
 
-    return { date: ev.date, city: ev.city, capacity, enrolled, linked, spend, leads, cpl, custoPorVenda, faturamento, campanhaLinked: !!ads, daysUntil };
+    return { date: ev.date, city: ev.city, capacity, enrolled, linked, spend, leads, cpl, custoPorVenda, faturamento, outrosCustos, campanhaLinked: !!ads, daysUntil };
   });
 }
 
@@ -679,6 +687,13 @@ function makeCard(ev){
         </div>
       </div>
       ${!ev.campanhaLinked ? '<div class="no-ads-note">Sem dados de campanha pra essa cidade</div>' : ''}
+      ${isPast && ev.outrosCustos > 0 ? `
+      <div class="ads-row">
+        <div class="ads-item">
+          <div class="ads-label">Outros Custos</div>
+          <div class="ads-value">${fmtBR.format(ev.outrosCustos)}</div>
+        </div>
+      </div>` : ''}
     </div>`;
 }
 
