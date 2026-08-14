@@ -618,9 +618,10 @@ function renderFilters(ev){
 /* ── CARD ── */
 function makeCard(ev){
   const pct = ev.capacity>0 ? Math.min(Math.round(ev.enrolled/ev.capacity*100),100) : 0;
-  const p   = palette(pct);
+  const isPast = typeof ev.daysUntil === 'number' && ev.daysUntil < 0;
+  const p   = isPast ? { bar:'#607070', text:'#607070', bg:'#EEF2F1', lbl:'#607070', badge:'Realizado' } : palette(pct);
   const rem = ev.capacity - ev.enrolled;
-  const lowOccupancyAlert = typeof ev.daysUntil === 'number' && ev.daysUntil >= 0 && ev.daysUntil <= 15 && pct < 50;
+  const lowOccupancyAlert = !isPast && typeof ev.daysUntil === 'number' && ev.daysUntil >= 0 && ev.daysUntil <= 15 && pct < 50;
   return `
     <div class="card${lowOccupancyAlert ? ' card-alert' : ''}">
       <div class="card-top-bar" style="background:${p.bar}"></div>
