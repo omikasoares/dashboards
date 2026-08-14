@@ -8,10 +8,11 @@ const PORT = process.env.PORT || 3000;
 
 // Cada cliente novo: pasta em clients/<slug>/, uma entrada aqui, e duas env
 // vars <ENV_PREFIX>_USER / <ENV_PREFIX>_PASSWORD no Portainer (stack
-// environment:, nunca .env na VPS). O path vira o roteamento real — nao
+// environment:, nunca .env na VPS). O path vira o roteamento real - nao
 // precisa de PathPrefix/stripprefix no Traefik, o Express já resolve.
 const CLIENTS = [
   { slug: 'vista1942', path: '/vista-1942', envPrefix: 'VISTA1942' },
+  { slug: 'reforma-tributaria', path: '/reforma-tributaria', envPrefix: 'REFORMATRIBUTARIA' },
 ];
 
 const app = express();

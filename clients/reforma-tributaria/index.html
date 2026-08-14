@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Reforma Tributária 2026 – Autz</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --teal:    #00272C;
+  --lime:    #E9FF4A;
+  --lime2:   #D2E132;
+  --white:   #FFFFFF;
+  --black:   #1A1A1A;
+  --bg:      #F2F4F3;
+  --card:    #FFFFFF;
+  --border:  #E2E8E5;
+  --muted:   #607070;
+  --light:   #A0B0B0;
+
+  --green:   #059669;
+  --yellow:  #D97706;
+  --orange:  #EA580C;
+  --red:     #DC2626;
+
+  --shadow:    0 1px 3px rgba(0,39,44,.07), 0 4px 12px rgba(0,39,44,.05);
+  --shadow-lg: 0 8px 28px rgba(0,39,44,.13);
+}
+
+html{ font-family:'Poppins',sans-serif; background:var(--bg); color:var(--black) }
+body{ min-height:100vh }
+
+/* ─── HEADER ─── */
+.header{
+  background: var(--teal);
+  position: relative;
+  overflow: hidden;
+  padding: 0 40px;
+}
+
+/* Arcos decorativos */
+.header::before{
+  content:'';
+  position:absolute; right:-80px; top:-80px;
+  width:340px; height:340px;
+  border-radius:50%;
+  border: 40px solid rgba(233,255,74,.07);
+  pointer-events:none;
+}
+.header::after{
+  content:'';
+  position:absolute; right:60px; top:-140px;
+  width:260px; height:260px;
+  border-radius:50%;
+  border: 28px solid rgba(233,255,74,.05);
+  pointer-events:none;
+}
+.arc-inner{
+  position:absolute; right:180px; bottom:-90px;
+  width:200px; height:200px;
+  border-radius:50%;
+  border: 20px solid rgba(233,255,74,.06);
+  pointer-events:none;
+}
+
+.header-inner{
+  max-width:1280px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:22px 0; gap:20px; flex-wrap:wrap;
+  position:relative; z-index:1;
+}
+
+/* Logo */
+.logo-area img{
+  height:38px; width:auto; display:block;
+}
+
+/* Divider vertical */
+.header-divider{
+  width:1px; height:38px;
+  background:rgba(255,255,255,.15);
+  flex-shrink:0;
+}
+
+/* Tagline */
+.tagline{
+  font-size:.78rem; font-weight:300; color:rgba(255,255,255,.55);
+  letter-spacing:.12em; text-transform:uppercase;
+  margin-top:3px;
+}
+.tagline strong{ font-weight:700; color:rgba(255,255,255,.85) }
+.tagline .dot-lime{ color:var(--lime) }
+
+/* Title block */
+.header-title-block{}
+.header-title{
+  font-size:1rem; font-weight:700; color:var(--white);
+  letter-spacing:.06em; text-transform:uppercase;
+}
+.header-subtitle{
+  font-size:.72rem; font-weight:300; color:rgba(255,255,255,.5);
+  margin-top:3px; letter-spacing:.03em;
+}
+
+/* Update badge */
+.update-badge{
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(233,255,74,.08);
+  border:1px solid rgba(233,255,74,.2);
+  border-radius:100px; padding:5px 14px; margin-top:8px;
+  font-size:.68rem; font-weight:500; color:rgba(255,255,255,.55);
+}
+.pulse{
+  width:6px; height:6px; border-radius:50%;
+  background:var(--lime); flex-shrink:0;
+  animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ─── STATS ─── */
+.wrap{ max-width:1280px; margin:0 auto; padding:0 28px }
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px; margin-top:28px;
+}
+.stat{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:20px 22px;
+  box-shadow:var(--shadow);
+  display:flex; align-items:center; gap:16px;
+}
+.stat-icon{
+  width:46px; height:46px; border-radius:12px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem;
+}
+.stat-label{
+  font-size:.65rem; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.08em;
+}
+.stat-value{
+  font-size:1.7rem; font-weight:800; line-height:1.1; margin-top:2px;
+}
+.stat-sub{ font-size:.7rem; color:var(--light); margin-top:2px; font-weight:400 }
+
+/* ─── FILTERS ─── */
+.filter-row{
+  display:flex; align-items:center; gap:8px;
+  flex-wrap:wrap; margin-top:22px;
+}
+.filter-label{
+  font-size:.65rem; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.08em; margin-right:4px;
+}
+.fbtn{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:8px; padding:6px 16px;
+  font-size:.75rem; font-weight:600; cursor:pointer;
+  color:var(--muted); transition:all .15s; font-family:'Poppins',sans-serif;
+  letter-spacing:.02em;
+}
+.fbtn:hover{ border-color:var(--teal); color:var(--teal) }
+.fbtn.active{
+  background:var(--teal); border-color:var(--teal);
+  color:var(--lime);
+}
+
+/* ─── SECTION ─── */
+.section{ margin-top:26px; padding-bottom:8px }
+.section-head{
+  display:flex; align-items:center; gap:10px; margin-bottom:14px;
+}
+.section-title{
+  font-size:.65rem; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.1em;
+}
+.section-pill{
+  background:var(--teal); color:var(--lime);
+  font-size:.65rem; font-weight:800; letter-spacing:.04em;
+  padding:3px 11px; border-radius:100px;
+  text-transform:uppercase;
+  border:1px solid rgba(233,255,74,.3);
+}
+
+/* ─── GRID ─── */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(268px,1fr));
+  gap:14px;
+}
+
+/* ─── CARD ─── */
+.card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:22px;
+  box-shadow:var(--shadow);
+  transition:transform .2s, box-shadow .2s;
+  position:relative; overflow:hidden;
+}
+.card:hover{ transform:translateY(-3px); box-shadow:var(--shadow-lg) }
+
+.card-top-bar{
+  position:absolute; top:0; left:0; right:0; height:3px;
+  border-radius:16px 16px 0 0;
+}
+
+.card-header{
+  display:flex; justify-content:space-between;
+  align-items:flex-start; margin-top:6px;
+}
+.card-city{
+  font-size:1.05rem; font-weight:700; color:var(--black);
+  line-height:1.2;
+}
+.card-date{
+  font-size:.7rem; color:var(--muted); margin-top:4px;
+  display:flex; align-items:center; gap:5px; font-weight:400;
+}
+
+.badge{
+  font-size:.58rem; font-weight:800; letter-spacing:.05em;
+  text-transform:uppercase; padding:3px 9px;
+  border-radius:100px; white-space:nowrap; flex-shrink:0;
+}
+
+.numbers{
+  display:flex; align-items:baseline; gap:5px; margin-top:18px;
+}
+.n-enrolled{
+  font-size:2.5rem; font-weight:900; line-height:1;
+}
+.n-sep{ font-size:1rem; color:var(--light); font-weight:400 }
+.n-cap{ font-size:.88rem; color:var(--muted); font-weight:500 }
+
+.bar-track{
+  margin-top:12px; background:#EEF2F1;
+  border-radius:100px; height:6px; overflow:hidden;
+}
+.bar-fill{
+  height:100%; border-radius:100px;
+  transition:width .9s cubic-bezier(.4,0,.2,1);
+}
+
+.card-foot{
+  display:flex; justify-content:space-between;
+  align-items:center; margin-top:9px;
+}
+.pct-text{ font-size:.73rem; font-weight:700 }
+.remain-text{ font-size:.7rem; color:var(--light); font-weight:400 }
+
+.no-link-note{
+  font-size:.67rem; color:var(--light);
+  font-style:italic; margin-top:10px;
+}
+
+/* ─── ADS (Investimento/Leads/CPL) ─── */
+.ads-row{
+  display:flex; justify-content:space-between;
+  margin-top:14px; padding-top:12px;
+  border-top:1px dashed var(--border);
+}
+.ads-item{ text-align:left }
+.ads-label{
+  font-size:.6rem; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.06em;
+}
+.ads-value{
+  font-size:.92rem; font-weight:800; color:var(--teal);
+  margin-top:2px;
+}
+.no-ads-note{
+  font-size:.67rem; color:var(--light);
+  font-style:italic; margin-top:8px;
+}
+
+/* ─── LOADING ─── */
+.loading-wrap{
+  max-width:1280px; margin:80px auto;
+  text-align:center; color:var(--muted); padding:0 28px;
+}
+.spinner{
+  width:38px; height:38px;
+  border:3px solid #DDE6E5;
+  border-top-color:var(--teal);
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  margin:0 auto 14px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{ font-size:.88rem; font-weight:500 }
+
+/* ─── FOOTER ─── */
+.footer{
+  text-align:center; padding:32px 24px;
+  font-size:.67rem; color:var(--light); font-weight:400;
+}
+.footer span{ color:var(--lime2); font-weight:600 }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:620px){
+  .header{ padding:0 18px }
+  .wrap{ padding:0 14px }
+  .header-divider{ display:none }
+  .stats-grid{ grid-template-columns:1fr 1fr }
+  .stat{ padding:14px 16px }
+  .stat-value{ font-size:1.3rem }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <div class="arc-inner"></div>
+  <div class="header-inner">
+
+    <!-- Esquerda: logo + tagline -->
+    <div>
+      <img src="https://email-editor-production.s3.amazonaws.com/images/990539/Logo%20Completa%20Para%20Fundo%20Escuro%406x.png"
+           alt="Autz" style="height:36px;width:auto;display:block"/>
+      <div class="tagline">
+        Make your data <strong>talk</strong><span class="dot-lime">.</span>
+      </div>
+    </div>
+
+    <div class="header-divider"></div>
+
+    <!-- Direita: título do dashboard -->
+    <div>
+      <div class="header-title">Reforma Tributária 2026</div>
+      <div class="header-subtitle">Acompanhamento de matrículas por evento</div>
+      <div class="update-badge">
+        <span class="pulse"></span>
+        <span id="lastUpdate">Carregando...</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<div class="wrap">
+  <div class="stats-grid" id="statsGrid">
+    <!-- preenchido via JS -->
+    <div class="stat"><div class="stat-icon" style="background:#E6F4F1">📅</div><div><div class="stat-label">Total de eventos</div><div class="stat-value">—</div><div class="stat-sub">carregando...</div></div></div>
+    <div class="stat"><div class="stat-icon" style="background:#E6F4F1">👥</div><div><div class="stat-label">Matriculados</div><div class="stat-value">—</div><div class="stat-sub">carregando...</div></div></div>
+    <div class="stat"><div class="stat-icon" style="background:#FAFBE6">📊</div><div><div class="stat-label">Ocupação geral</div><div class="stat-value">—</div><div class="stat-sub">carregando...</div></div></div>
+    <div class="stat"><div class="stat-icon" style="background:#E6F4F1">📍</div><div><div class="stat-label">Próximo evento</div><div class="stat-value" style="font-size:1rem;padding-top:3px">—</div><div class="stat-sub">—</div></div></div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filter-row" id="filterRow">
+    <span class="filter-label">Mês</span>
+  </div>
+</div>
+
+<!-- ═══ CONTEÚDO ═══ -->
+<div id="mainContent" style="padding-bottom:8px">
+  <div class="loading-wrap">
+    <div class="spinner"></div>
+    <div class="loading-text">Buscando matrículas...</div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="footer">
+  Dashboard gerado por <span>Autz</span> · Atualização automática a cada 5 minutos
+</div>
+
+<script>
+/* ── WEBHOOKS (n8n) ── */
+const MATRICULAS_WEBHOOK_URL = 'https://webhook.autz.com.br/webhook/cplay-matriculas';
+const FATURAMENTO_WEBHOOK_URL = 'https://webhook.autz.com.br/webhook/cplay-faturamento';
+const CAMPANHAS_DIM_URL = 'https://webhook.autz.com.br/webhook/campanhas-cplay-dim';
+const CAMPANHAS_FACT_URL = 'https://webhook.autz.com.br/webhook/campanhas-cplay-fact';
+const PRODUCT_TOUR = 'apuracao_assistida';
+
+/* ── EVENTOS / CAPACIDADE ── */
+const DEFAULT_CAPACITY = 60;
+const CITY_CAPACITY = {
+  'Cuiabá':                100,
+  'Rio de Janeiro':         60,
+  'Palmas':                152,
+  'Bauru':                  60,
+  'Goiânia':                70,
+  'Foz do Iguaçu':         100,
+  'Cascavel':               58,
+  'Londrina':               60,
+  'Joinville':             150,
+  'Curitiba':              150,
+  'São José do Rio Preto':  60,
+  'Porto Alegre':           80,
+  'São Paulo':              76,
+  'Belo Horizonte':        110,
+  'Recife':                 85,
+  'São José dos Campos':   150,
+  'Campinas':              120,
+  'Vitória':                80,
+  'Uberlândia':            100,
+  'Aracaju':               100,
+  'Campo Grande':          135,
+};
+
+const EVENTS = [
+  { date: '17/07/2026', city: 'Cuiabá' },
+  { date: '24/07/2026', city: 'Rio de Janeiro' },
+  { date: '31/07/2026', city: 'Palmas' },
+  { date: '07/08/2026', city: 'Bauru' },
+  { date: '14/08/2026', city: 'Goiânia' },
+  { date: '18/08/2026', city: 'Foz do Iguaçu' },
+  { date: '19/08/2026', city: 'Cascavel' },
+  { date: '21/08/2026', city: 'Londrina' },
+  { date: '26/08/2026', city: 'Joinville' },
+  { date: '28/08/2026', city: 'Curitiba' },
+  { date: '04/09/2026', city: 'São José do Rio Preto' },
+  { date: '09/09/2026', city: 'Porto Alegre' },
+  { date: '17/09/2026', city: 'São Paulo' },
+  { date: '25/09/2026', city: 'Belo Horizonte' },
+  { date: '02/10/2026', city: 'Recife' },
+  { date: '08/10/2026', city: 'São José dos Campos' },
+  { date: '09/10/2026', city: 'Campinas' },
+  { date: '16/10/2026', city: 'Vitória' },
+  { date: '23/10/2026', city: 'João Pessoa' },
+  { date: '30/10/2026', city: 'Uberlândia' },
+  { date: '06/11/2026', city: 'Aracaju' },
+  { date: '13/11/2026', city: 'Campo Grande' },
+  { date: '19/11/2026', city: 'Ribeirão Preto' },
+  { date: '24/11/2026', city: 'Manaus' },
+  { date: '26/11/2026', city: 'Belém' },
+  { date: '11/12/2026', city: 'Florianópolis' },
+];
+
+function norm(str) {
+  return str.toString().toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+async function fetchWebhookJson(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    const parsed = await res.json();
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.error('Erro ao consultar webhook', url, e);
+    return [];
+  }
+}
+
+/* ── MONTA OS DADOS DO DASHBOARD (antes era Apps Script / getDashboardData) ── */
+async function getDashboardData() {
+  const [matriculaRows, faturamentoRows, dimRows, factRows] = await Promise.all([
+    fetchWebhookJson(MATRICULAS_WEBHOOK_URL),
+    fetchWebhookJson(FATURAMENTO_WEBHOOK_URL),
+    fetchWebhookJson(CAMPANHAS_DIM_URL),
+    fetchWebhookJson(CAMPANHAS_FACT_URL),
+  ]);
+
+  const matriculasPorCidade = {};
+  matriculaRows.forEach(function(r) {
+    if (r.city) matriculasPorCidade[norm(r.city)] = Number(r.matriculas) || 0;
+  });
+
+  const faturamentoPorCidade = {};
+  faturamentoRows.forEach(function(r) {
+    if (r.city) faturamentoPorCidade[norm(r.city)] = Number(r.faturamento) || 0;
+  });
+
+  const dimById = {};
+  dimRows.forEach(function(d) {
+    if (d.product === PRODUCT_TOUR) dimById[String(d.campaign_id)] = d;
+  });
+
+  const investimentoPorCidade = {};
+  factRows.forEach(function(f) {
+    const dim = dimById[String(f.campaign_id)];
+    if (!dim || !dim.cidade) return;
+    const key = norm(dim.cidade);
+    if (!investimentoPorCidade[key]) investimentoPorCidade[key] = { spend: 0, leads: 0 };
+    investimentoPorCidade[key].spend += Number(f.spend) || 0;
+    investimentoPorCidade[key].leads += Number(f.leads) || 0;
+  });
+
+  return EVENTS.map(function(ev) {
+    const key = norm(ev.city);
+    const enrolled = matriculasPorCidade[key] || 0;
+    const linked = matriculasPorCidade[key] !== undefined;
+    const faturamento = faturamentoPorCidade[key] || 0;
+    const capacity = CITY_CAPACITY[ev.city] !== undefined ? CITY_CAPACITY[ev.city] : DEFAULT_CAPACITY;
+
+    const ads = investimentoPorCidade[key];
+    const spend = ads ? ads.spend : 0;
+    const leads = ads ? ads.leads : 0;
+    const cpl = leads > 0 ? spend / leads : 0;
+    const custoPorVenda = enrolled > 0 ? spend / enrolled : 0;
+
+    return { date: ev.date, city: ev.city, capacity, enrolled, linked, spend, leads, cpl, custoPorVenda, faturamento, campanhaLinked: !!ads };
+  });
+}
+
+let allEvents  = [];
+let activeFilter = 'all';
+
+const MONTHS = {
+  '07':'Julho','08':'Agosto','09':'Setembro',
+  '10':'Outubro','11':'Novembro','12':'Dezembro'
+};
+
+const fmtBR = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
+
+function palette(pct){
+  if(pct >= 95) return { bar:'#DC2626', text:'#DC2626', bg:'#FEF2F2', lbl:'#DC2626', badge:'Lotado' };
+  if(pct >= 80) return { bar:'#EA580C', text:'#EA580C', bg:'#FFF7ED', lbl:'#EA580C', badge:'Quase cheio' };
+  if(pct >= 50) return { bar:'#D97706', text:'#D97706', bg:'#FFFBEB', lbl:'#D97706', badge:'Enchendo' };
+  return        { bar:'#059669', text:'#059669', bg:'#ECFDF5', lbl:'#059669', badge:'Disponível' };
+}
+
+function fmtDate(str){
+  const [d,m,y] = str.split('/');
+  return new Date(y,m-1,d).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+/* ── STATS ── */
+function renderStats(ev){
+  const total    = ev.length;
+  const enrolled = ev.reduce((s,e)=>s+e.enrolled,0);
+  const capacity = ev.reduce((s,e)=>s+e.capacity,0);
+  const pct      = capacity>0 ? Math.round(enrolled/capacity*100) : 0;
+  const p        = palette(pct);
+// Pega a data de hoje e zera as horas para uma comparação justa
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Encontra o primeiro evento cuja data seja MAIOR ou IGUAL a hoje
+  const next = ev.find(e => {
+    const [d, m, y] = e.date.split('/');
+    const eventDate = new Date(y, m - 1, d);
+    return eventDate >= today;
+  }) || ev[ev.length - 1]; // Se a turnê inteira acabar, mostra o último evento
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat">
+      <div class="stat-icon" style="background:#E6F4F1;font-size:1.2rem">📅</div>
+      <div>
+        <div class="stat-label">Total de eventos</div>
+        <div class="stat-value" style="color:#00272C">${total}</div>
+        <div class="stat-sub">${total} cidades do Brasil</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#E6F4F1;font-size:1.2rem">👥</div>
+      <div>
+        <div class="stat-label">Matriculados</div>
+        <div class="stat-value" style="color:#059669">${enrolled}</div>
+        <div class="stat-sub">de ${capacity} vagas totais</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#FAFBE6;font-size:1.2rem">📊</div>
+      <div>
+        <div class="stat-label">Ocupação geral</div>
+        <div class="stat-value" style="color:${p.text}">${pct}%</div>
+        <div class="stat-sub">${capacity-enrolled} vagas restantes</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#E6F4F1;font-size:1.2rem">📍</div>
+      <div>
+        <div class="stat-label">Próximo evento</div>
+        <div class="stat-value" style="font-size:.98rem;padding-top:3px;color:#00272C">${next?next.city:'—'}</div>
+        <div class="stat-sub">${next?next.date:'—'}</div>
+      </div>
+    </div>`;
+}
+
+/* ── FILTERS ── */
+function renderFilters(ev){
+  const months = ['all'];
+  ev.forEach(e=>{ const m=e.date.split('/')[1]; if(!months.includes(m)) months.push(m); });
+  const btns = months.map(m=>{
+    const lbl = m==='all' ? 'Todos' : (MONTHS[m]||m);
+    return `<button class="fbtn${m===activeFilter?' active':''}" onclick="setFilter('${m}')">${lbl}</button>`;
+  }).join('');
+  document.getElementById('filterRow').innerHTML = `<span class="filter-label">Mês</span>${btns}`;
+}
+
+/* ── CARD ── */
+function makeCard(ev){
+  const pct = ev.capacity>0 ? Math.min(Math.round(ev.enrolled/ev.capacity*100),100) : 0;
+  const p   = palette(pct);
+  const rem = ev.capacity - ev.enrolled;
+  return `
+    <div class="card">
+      <div class="card-top-bar" style="background:${p.bar}"></div>
+      <div class="card-header">
+        <div>
+          <div class="card-city">${ev.city}</div>
+          <div class="card-date">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#607070" stroke-width="2.2">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            ${fmtDate(ev.date)}
+          </div>
+        </div>
+        <span class="badge" style="background:${p.bg};color:${p.lbl}">${p.badge}</span>
+      </div>
+      <div class="numbers">
+        <span class="n-enrolled" style="color:${p.text}">${ev.enrolled}</span>
+        <span class="n-sep">/</span>
+        <span class="n-cap">${ev.capacity} vagas</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${pct}%;background:${p.bar}"></div>
+      </div>
+      <div class="card-foot">
+        <span class="pct-text" style="color:${p.text}">${pct}% ocupado</span>
+        <span class="remain-text">${rem>0 ? rem+' restantes' : '⚠️ Sem vagas'}</span>
+      </div>
+      ${!ev.linked ? '<div class="no-link-note">Ainda sem matrículas registradas</div>' : ''}
+      <div class="ads-row">
+        <div class="ads-item">
+          <div class="ads-label">Investido</div>
+          <div class="ads-value">${fmtBR.format(ev.spend || 0)}</div>
+        </div>
+        <div class="ads-item">
+          <div class="ads-label">Leads</div>
+          <div class="ads-value">${ev.leads || 0}</div>
+        </div>
+        <div class="ads-item">
+          <div class="ads-label">CPL</div>
+          <div class="ads-value">${fmtBR.format(ev.cpl || 0)}</div>
+        </div>
+      </div>
+      <div class="ads-row">
+        <div class="ads-item">
+          <div class="ads-label">Custo por Venda</div>
+          <div class="ads-value">${fmtBR.format(ev.custoPorVenda || 0)}</div>
+        </div>
+        <div class="ads-item">
+          <div class="ads-label">Faturamento</div>
+          <div class="ads-value">${fmtBR.format(ev.faturamento || 0)}</div>
+        </div>
+      </div>
+      ${!ev.campanhaLinked ? '<div class="no-ads-note">Sem dados de campanha pra essa cidade</div>' : ''}
+    </div>`;
+}
+
+/* ── CARDS ── */
+function renderCards(ev){
+  const filtered = activeFilter==='all' ? ev
+    : ev.filter(e=>e.date.split('/')[1]===activeFilter);
+
+  if(!filtered.length){
+    document.getElementById('mainContent').innerHTML =
+      '<div class="loading-wrap"><p>Nenhum evento encontrado.</p></div>';
+    return;
+  }
+
+  let html = '';
+
+  if(activeFilter==='all'){
+    const byMonth = {};
+    filtered.forEach(e=>{
+      const m = e.date.split('/')[1];
+      if(!byMonth[m]) byMonth[m]=[];
+      byMonth[m].push(e);
+    });
+    for(const [m,evs] of Object.entries(byMonth).sort((a,b)=>a[0]>b[0]?1:-1)){
+      const enrolled = evs.reduce((s,e)=>s+e.enrolled,0);
+      const capacity = evs.reduce((s,e)=>s+e.capacity,0);
+      const pct      = capacity>0?Math.round(enrolled/capacity*100):0;
+      html += `
+        <div class="wrap">
+          <div class="section">
+            <div class="section-head">
+              <span class="section-title">${MONTHS[m]||m} 2026</span>
+              <span class="section-pill">${evs.length} eventos · ${pct}% ocupado</span>
+            </div>
+            <div class="grid">${evs.map(makeCard).join('')}</div>
+          </div>
+        </div>`;
+    }
+  } else {
+    html = `<div class="wrap"><div class="section">
+      <div class="grid">${filtered.map(makeCard).join('')}</div>
+    </div></div>`;
+  }
+
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function setFilter(f){
+  activeFilter = f;
+  renderFilters(allEvents);
+  renderCards(allEvents);
+}
+
+/* ── LOAD ── */
+function load(){
+  getDashboardData()
+    .then(function(data){
+      allEvents = data || [];
+      renderStats(allEvents);
+      renderFilters(allEvents);
+      renderCards(allEvents);
+      const now = new Date();
+      document.getElementById('lastUpdate').textContent =
+        'Atualizado às '+now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    })
+    .catch(function(e){
+      document.getElementById('mainContent').innerHTML =
+        '<div class="loading-wrap"><p style="color:#DC2626">Erro ao carregar: '+e.message+'</p></div>';
+    });
+}
+
+load();
+setInterval(load, 5*60*1000);
+</script>
+</body>
+</html>
