@@ -257,6 +257,25 @@ body{ min-height:100vh }
   font-style:italic; margin-top:10px;
 }
 
+.card.card-alert{
+  border-color: var(--red);
+  background: #FFF7F7;
+  box-shadow: 0 1px 3px rgba(220,38,38,.15), 0 4px 12px rgba(220,38,38,.08);
+}
+.occupancy-alert{
+  margin-top:12px;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#FEF2F2;
+  border:1px solid #FCA5A5;
+  color:#B91C1C;
+  font-size:.72rem;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
 /* ─── ADS (Investimento/Leads/CPL) ─── */
 .ads-row{
   display:flex; justify-content:space-between;
@@ -383,9 +402,9 @@ const PRODUCT_TOUR = 'apuracao_assistida';
 const DEFAULT_CAPACITY = 60;
 const CITY_CAPACITY = {
   'Cuiabá':                100,
-  'Rio de Janeiro':         60,
+  'Rio de Janeiro':         72,
   'Palmas':                152,
-  'Bauru':                  60,
+  'Bauru':                  66,
   'Goiânia':                70,
   'Foz do Iguaçu':         100,
   'Cascavel':               58,
@@ -486,6 +505,9 @@ async function getDashboardData() {
     investimentoPorCidade[key].leads += Number(f.leads) || 0;
   });
 
+  const todayMidnight = new Date();
+  todayMidnight.setHours(0, 0, 0, 0);
+
   return EVENTS.map(function(ev) {
     const key = norm(ev.city);
     const enrolled = matriculasPorCidade[key] || 0;
@@ -499,7 +521,11 @@ async function getDashboardData() {
     const cpl = leads > 0 ? spend / leads : 0;
     const custoPorVenda = enrolled > 0 ? spend / enrolled : 0;
 
-    return { date: ev.date, city: ev.city, capacity, enrolled, linked, spend, leads, cpl, custoPorVenda, faturamento, campanhaLinked: !!ads };
+    const [d, m, y] = ev.date.split('/');
+    const eventDate = new Date(y, m - 1, d);
+    const daysUntil = Math.round((eventDate - todayMidnight) / 86400000);
+
+    return { date: ev.date, city: ev.city, capacity, enrolled, linked, spend, leads, cpl, custoPorVenda, faturamento, campanhaLinked: !!ads, daysUntil };
   });
 }
 
@@ -594,8 +620,9 @@ function makeCard(ev){
   const pct = ev.capacity>0 ? Math.min(Math.round(ev.enrolled/ev.capacity*100),100) : 0;
   const p   = palette(pct);
   const rem = ev.capacity - ev.enrolled;
+  const lowOccupancyAlert = typeof ev.daysUntil === 'number' && ev.daysUntil >= 0 && ev.daysUntil <= 15 && pct < 50;
   return `
-    <div class="card">
+    <div class="card${lowOccupancyAlert ? ' card-alert' : ''}">
       <div class="card-top-bar" style="background:${p.bar}"></div>
       <div class="card-header">
         <div>
@@ -612,6 +639,7 @@ function makeCard(ev){
         </div>
         <span class="badge" style="background:${p.bg};color:${p.lbl}">${p.badge}</span>
       </div>
+      ${lowOccupancyAlert ? `<div class="occupancy-alert">⚠️ Faltam ${ev.daysUntil} dia${ev.daysUntil===1?'':'s'} e a ocupação está em ${pct}%</div>` : ''}
       <div class="numbers">
         <span class="n-enrolled" style="color:${p.text}">${ev.enrolled}</span>
         <span class="n-sep">/</span>
