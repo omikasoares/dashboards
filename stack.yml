@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+
+  dashboards:
+    image: dashboards:latest
+
+    networks:
+      - AutzNet
+
+    environment:
+      - TZ=America/Sao_Paulo
+      - PORT=3000
+      - VISTA1942_USER=${VISTA1942_USER}
+      - VISTA1942_PASSWORD=${VISTA1942_PASSWORD}
+
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.dashboards.rule=Host(`dash.autz.com.br`)
+        - traefik.http.services.dashboards.loadbalancer.server.port=3000
+        - traefik.http.routers.dashboards.service=dashboards
+        - traefik.http.routers.dashboards.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.dashboards.entrypoints=websecure
+        - traefik.http.routers.dashboards.tls=true
+
+networks:
+  AutzNet:
+    external: true
+    name: AutzNet

@@ -1,0 +1,19 @@
+{
+  "name": "dashboards",
+  "version": "1.0.0",
+  "description": "Dashboards internos da Autz para clientes (um path por cliente em dash.autz.com.br)",
+  "private": true,
+  "main": "server.js",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-basic-auth": "^1.2.1"
+  }
+}
