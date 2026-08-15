@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Painel Financeiro – Autz / We Sales</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --teal:    #00272C;
+  --lime:    #E9FF4A;
+  --lime2:   #D2E132;
+  --white:   #FFFFFF;
+  --black:   #1A1A1A;
+  --bg:      #F2F4F3;
+  --card:    #FFFFFF;
+  --border:  #E2E8E5;
+  --muted:   #607070;
+  --light:   #A0B0B0;
+
+  --green:   #059669;
+  --yellow:  #D97706;
+  --orange:  #EA580C;
+  --red:     #DC2626;
+
+  --shadow:    0 1px 3px rgba(0,39,44,.07), 0 4px 12px rgba(0,39,44,.05);
+  --shadow-lg: 0 8px 28px rgba(0,39,44,.13);
+}
+
+html{ font-family:'Poppins',sans-serif; background:var(--bg); color:var(--black) }
+body{ min-height:100vh }
+
+/* ─── HEADER ─── */
+.header{ background:var(--teal); position:relative; overflow:hidden; padding:0 40px }
+.header::before{
+  content:''; position:absolute; right:-80px; top:-80px; width:340px; height:340px;
+  border-radius:50%; border:40px solid rgba(233,255,74,.07); pointer-events:none;
+}
+.header::after{
+  content:''; position:absolute; right:60px; top:-140px; width:260px; height:260px;
+  border-radius:50%; border:28px solid rgba(233,255,74,.05); pointer-events:none;
+}
+.header-inner{
+  max-width:1280px; margin:0 auto; display:flex; align-items:center; justify-content:space-between;
+  padding:22px 0; gap:20px; flex-wrap:wrap; position:relative; z-index:1;
+}
+.header-title{ font-size:1.05rem; font-weight:700; color:var(--white); letter-spacing:.04em }
+.header-subtitle{ font-size:.72rem; font-weight:300; color:rgba(255,255,255,.55); margin-top:3px }
+.header-right{ display:flex; align-items:center; gap:14px }
+.month-picker{
+  background:rgba(255,255,255,.08); border:1px solid rgba(233,255,74,.25); border-radius:10px;
+  padding:8px 12px; color:var(--white); font-family:'Poppins',sans-serif; font-size:.8rem; font-weight:600;
+}
+.month-picker::-webkit-calendar-picker-indicator{ filter:invert(1) }
+
+/* ─── TABS ─── */
+.tabs{ display:flex; gap:6px; max-width:1280px; margin:0 auto; padding:0 40px; position:relative; z-index:1 }
+.tab{
+  padding:11px 20px; font-size:.78rem; font-weight:700; color:rgba(255,255,255,.5);
+  cursor:pointer; border-bottom:3px solid transparent; letter-spacing:.02em; transition:all .15s;
+}
+.tab:hover{ color:rgba(255,255,255,.8) }
+.tab.active{ color:var(--lime); border-bottom-color:var(--lime) }
+
+.wrap{ max-width:1280px; margin:0 auto; padding:28px 28px 8px }
+
+/* ─── SECTION ─── */
+.section{ margin-top:26px }
+.section-head{ display:flex; align-items:center; gap:10px; margin-bottom:14px }
+.section-title{ font-size:.68rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.1em }
+.section-pill{
+  background:var(--teal); color:var(--lime); font-size:.62rem; font-weight:800; letter-spacing:.04em;
+  padding:3px 11px; border-radius:100px; text-transform:uppercase; border:1px solid rgba(233,255,74,.3);
+}
+
+/* ─── GRID / CARD ─── */
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px }
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 22px;
+  box-shadow:var(--shadow); position:relative; overflow:hidden;
+}
+.card-top-bar{ position:absolute; top:0; left:0; right:0; height:3px; border-radius:16px 16px 0 0 }
+.card-label{ font-size:.62rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.07em }
+.card-value{ font-size:1.6rem; font-weight:800; line-height:1.15; margin-top:6px }
+.card-sub{ font-size:.7rem; color:var(--light); margin-top:4px; font-weight:400 }
+.card-value.pos{ color:var(--green) }
+.card-value.neg{ color:var(--red) }
+
+/* ─── ALERT CARD ─── */
+.alert-card{
+  border-radius:14px; padding:16px 18px; display:flex; align-items:flex-start; gap:12px;
+  border:1px solid var(--border); background:var(--card); box-shadow:var(--shadow);
+}
+.alert-card.ok{ border-color:#BBEBD1; background:#F3FCF7 }
+.alert-card.warn{ border-color:#FCE2A8; background:#FFFAF0 }
+.alert-card.bad{ border-color:#FCA5A5; background:#FFF7F7 }
+.alert-icon{ font-size:1.2rem; line-height:1; flex-shrink:0 }
+.alert-body{ flex:1 }
+.alert-title{ font-size:.82rem; font-weight:700 }
+.alert-title.ok{ color:var(--green) }
+.alert-title.warn{ color:var(--yellow) }
+.alert-title.bad{ color:var(--red) }
+.alert-detail{ font-size:.72rem; color:var(--muted); margin-top:3px; line-height:1.4 }
+
+.bar-track{ margin-top:10px; background:#EEF2F1; border-radius:100px; height:7px; overflow:hidden }
+.bar-fill{ height:100%; border-radius:100px; transition:width .6s ease }
+
+.note{
+  font-size:.68rem; color:var(--light); font-style:italic; margin-top:10px; line-height:1.5;
+  background:#F7F9F8; border-radius:8px; padding:8px 10px;
+}
+
+/* ─── TABLE (resumo anual) ─── */
+.table-wrap{ overflow-x:auto; background:var(--card); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow) }
+table{ width:100%; border-collapse:collapse; font-size:.78rem; min-width:640px }
+th{
+  text-align:left; padding:12px 14px; font-size:.62rem; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.05em; border-bottom:1px solid var(--border); white-space:nowrap;
+}
+td{ padding:11px 14px; border-bottom:1px solid #F0F3F2; white-space:nowrap }
+tr:last-child td{ border-bottom:none }
+.tag-pos{ color:var(--green); font-weight:700 }
+.tag-neg{ color:var(--red); font-weight:700 }
+.row-below-floor{ background:#FFF7F7 }
+
+/* ─── LOADING / EMPTY ─── */
+.loading-wrap{ max-width:1280px; margin:80px auto; text-align:center; color:var(--muted); padding:0 28px }
+.spinner{ width:38px; height:38px; border:3px solid #DDE6E5; border-top-color:var(--teal); border-radius:50%; animation:spin .7s linear infinite; margin:0 auto 14px }
+@keyframes spin{ to{ transform:rotate(360deg) } }
+.loading-text{ font-size:.88rem; font-weight:500 }
+.error-box{
+  max-width:640px; margin:60px auto; background:#FFF7F7; border:1px solid #FCA5A5; border-radius:14px;
+  padding:20px 24px; color:#B91C1C; font-size:.82rem; line-height:1.6;
+}
+
+.footer{ text-align:center; padding:32px 24px; font-size:.67rem; color:var(--light); font-weight:400 }
+.footer span{ color:var(--lime2); font-weight:600 }
+
+@media(max-width:620px){
+  .header{ padding:0 18px } .tabs{ padding:0 18px } .wrap{ padding:20px 14px 8px }
+  .card-value{ font-size:1.3rem }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <div class="header-title">PAINEL FINANCEIRO — AUTZ &amp; WE SALES</div>
+      <div class="header-subtitle">Previsão do mês, alertas e resumo do ano — uso interno</div>
+    </div>
+    <div class="header-right">
+      <input type="month" id="monthPicker" class="month-picker"/>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" data-tab="autz">AUTZ</div>
+    <div class="tab" data-tab="wesales">WE SALES</div>
+    <div class="tab" data-tab="resumo">RESUMO DO ANO</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="loading-wrap"><div class="spinner"></div><div class="loading-text">Carregando dados…</div></div>
+</div>
+
+<div class="footer">Painel interno <span>Autz</span> — dados sincronizados via Granatum, não é saldo bancário oficial</div>
+
+<script>
+const PREVISAO_URL = 'https://webhook.autz.com.br/webhook/autz-wesales-previsao';
+const RESUMO_URL   = 'https://webhook.autz.com.br/webhook/autz-wesales-resumo-anual';
+
+const fmtMoney = (v) => (v ?? 0).toLocaleString('pt-BR', { style:'currency', currency:'BRL', maximumFractionDigits:0 });
+const fmtPct = (v) => v === null || v === undefined ? '—' : (v*100).toLocaleString('pt-BR', { maximumFractionDigits:1 }) + '%';
+
+let state = { tab:'autz', mes: new Date().toISOString().slice(0,7) };
+
+const monthPicker = document.getElementById('monthPicker');
+monthPicker.value = state.mes;
+monthPicker.addEventListener('change', () => { state.mes = monthPicker.value; render(); });
+
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    state.tab = t.dataset.tab;
+    monthPicker.style.display = state.tab === 'resumo' ? 'none' : '';
+    render();
+  });
+});
+
+function loading() {
+  document.getElementById('app').innerHTML = '<div class="loading-wrap"><div class="spinner"></div><div class="loading-text">Carregando dados…</div></div>';
+}
+function errorBox(msg) {
+  document.getElementById('app').innerHTML = `<div class="wrap"><div class="error-box"><strong>Não consegui carregar os dados.</strong><br/>${msg}</div></div>`;
+}
+
+async function render() {
+  loading();
+  try {
+    if (state.tab === 'resumo') {
+      const r = await fetch(RESUMO_URL);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const data = await r.json();
+      renderResumo(data);
+    } else {
+      const empresa = state.tab === 'autz' ? 'AUTZ' : 'WE SALES';
+      const r = await fetch(`${PREVISAO_URL}?empresa=${encodeURIComponent(empresa)}&mes=${state.mes}`);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const data = await r.json();
+      renderPrevisao(data);
+    }
+  } catch (e) {
+    errorBox('Erro técnico: ' + e.message + '<br/><br/>Se a página não carregou nada até agora, pode ser que os webhooks ainda não estejam liberados (limite de leitura do Google Sheets) — tenta de novo em alguns minutos.');
+  }
+}
+
+function alertClass(alerta) { return alerta ? 'bad' : 'ok'; }
+function alertIcon(alerta) { return alerta ? '⚠️' : '✅'; }
+
+function renderPrevisao(d) {
+  const p = d.previsao;
+  const margemClass = p.margemPrevista >= 0 ? 'pos' : 'neg';
+
+  const html = `
+  <div class="wrap">
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">Previsão do mês — ${d.mes}</span>
+        <span class="section-pill">${d.empresa}</span>
+      </div>
+      <div class="grid">
+        <div class="card"><div class="card-top-bar" style="background:var(--teal)"></div>
+          <div class="card-label">Faturamento Previsto</div>
+          <div class="card-value">${fmtMoney(p.faturamentoPrevisto)}</div>
+          <div class="card-sub">contas a receber do mês (competência)</div>
+        </div>
+        <div class="card"><div class="card-top-bar" style="background:var(--orange)"></div>
+          <div class="card-label">Custo com Equipe Previsto</div>
+          <div class="card-value">${fmtMoney(p.custoEquipePrevisto)}</div>
+          <div class="card-sub">funcionários + fatia do pró-labore</div>
+        </div>
+        <div class="card"><div class="card-top-bar" style="background:var(--yellow)"></div>
+          <div class="card-label">Custos Fixos Previstos</div>
+          <div class="card-value">${fmtMoney(p.custosFixosPrevistos)}</div>
+          <div class="card-sub">aluguel R$ ${p.detalheCustosFixos.aluguel} · internet R$ ${p.detalheCustosFixos.internet} · imposto ${fmtMoney(p.detalheCustosFixos.imposto)}</div>
+        </div>
+        <div class="card"><div class="card-top-bar" style="background:#60a5fa"></div>
+          <div class="card-label">Tráfego + Social Media</div>
+          <div class="card-value">${fmtMoney(p.trafegoPagoPrevisto + p.socialMediaPrevisto)}</div>
+          <div class="card-sub">tráfego ${fmtMoney(p.trafegoPagoPrevisto)} · social ${fmtMoney(p.socialMediaPrevisto)}</div>
+        </div>
+        <div class="card"><div class="card-top-bar" style="background:${p.margemPrevista>=0?'var(--green)':'var(--red)'}"></div>
+          <div class="card-label">Margem Prevista</div>
+          <div class="card-value ${margemClass}">${fmtMoney(p.margemPrevista)}</div>
+          <div class="card-sub">faturamento − custos previstos</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title">Alertas &amp; Regras</span></div>
+      <div class="grid">
+
+        <div class="alert-card ${alertClass(d.pisoSustentacao.alerta)}">
+          <div class="alert-icon">${alertIcon(d.pisoSustentacao.alerta)}</div>
+          <div class="alert-body">
+            <div class="alert-title ${alertClass(d.pisoSustentacao.alerta)}">Piso de Sustentação</div>
+            <div class="alert-detail">Combinado Autz+We Sales: ${fmtMoney(d.pisoSustentacao.faturamentoCombinado)} de ${fmtMoney(d.pisoSustentacao.piso)} mínimos</div>
+          </div>
+        </div>
+
+        <div class="alert-card ${alertClass(d.prolaboreMika.alerta)}">
+          <div class="alert-icon">${alertIcon(d.prolaboreMika.alerta)}</div>
+          <div class="alert-body">
+            <div class="alert-title ${alertClass(d.prolaboreMika.alerta)}">Pró-labore do Mika (global)</div>
+            <div class="alert-detail">Utilizado ${fmtMoney(d.prolaboreMika.utilizado)} de ${fmtMoney(d.prolaboreMika.teto)} — disponível ${fmtMoney(d.prolaboreMika.disponivel)}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100, d.prolaboreMika.teto>0?(d.prolaboreMika.utilizado/d.prolaboreMika.teto*100):0)}%; background:${d.prolaboreMika.alerta?'var(--red)':'var(--teal)'}"></div></div>
+          </div>
+        </div>
+
+        <div class="alert-card ${alertClass(d.crescimento.alerta)}">
+          <div class="alert-icon">${alertIcon(d.crescimento.alerta)}</div>
+          <div class="alert-body">
+            <div class="alert-title ${alertClass(d.crescimento.alerta)}">Crescimento vs. mês anterior</div>
+            <div class="alert-detail">${fmtPct(d.crescimento.pct)} (meta ${fmtPct(d.crescimento.meta)}) — ${fmtMoney(d.crescimento.atual)} vs ${fmtMoney(d.crescimento.anterior)}</div>
+          </div>
+        </div>
+
+        <div class="alert-card ${alertClass(d.churn.alerta)}">
+          <div class="alert-icon">${alertIcon(d.churn.alerta)}</div>
+          <div class="alert-body">
+            <div class="alert-title ${alertClass(d.churn.alerta)}">Churn</div>
+            <div class="alert-detail">${fmtPct(d.churn.churnPct)} (teto ${fmtPct(d.churn.teto)}) — R$ ${d.churn.receitaPerdida} perdidos de ${fmtMoney(d.churn.baseAnterior)}</div>
+          </div>
+        </div>
+
+        <div class="alert-card ${alertClass(p.cartaoCredito.alerta)}">
+          <div class="alert-icon">${alertIcon(p.cartaoCredito.alerta)}</div>
+          <div class="alert-body">
+            <div class="alert-title ${alertClass(p.cartaoCredito.alerta)}">Cartão de Crédito</div>
+            <div class="alert-detail">${fmtPct(p.cartaoCredito.pctFaturamento)} do faturamento (teto ${fmtPct(p.cartaoCredito.teto)}) — ${fmtMoney(p.cartaoCredito.valor)}</div>
+          </div>
+        </div>
+
+        <div class="alert-card ${alertClass(p.marketing.alerta)}">
+          <div class="alert-icon">${alertIcon(p.marketing.alerta)}</div>
+          <div class="alert-body">
+            <div class="alert-title ${alertClass(p.marketing.alerta)}">Marketing/Tráfego real</div>
+            <div class="alert-detail">${fmtPct(p.marketing.pctFaturamento)} do faturamento (teto ${fmtPct(p.marketing.teto)}) — ${fmtMoney(p.marketing.valor)}</div>
+          </div>
+        </div>
+
+        <div class="alert-card ${alertClass(p.ferramentas.alerta)}">
+          <div class="alert-icon">${alertIcon(p.ferramentas.alerta)}</div>
+          <div class="alert-body">
+            <div class="alert-title ${alertClass(p.ferramentas.alerta)}">Ferramentas/SaaS</div>
+            <div class="alert-detail">${fmtPct(p.ferramentas.pctFaturamento)} do faturamento (teto ${fmtPct(p.ferramentas.teto)}) — ${fmtMoney(p.ferramentas.valor)}</div>
+          </div>
+        </div>
+
+        <div class="alert-card ${alertClass(p.capacitacao.alerta)}">
+          <div class="alert-icon">${alertIcon(p.capacitacao.alerta)}</div>
+          <div class="alert-body">
+            <div class="alert-title ${alertClass(p.capacitacao.alerta)}">Capacitação/Mentoria</div>
+            <div class="alert-detail">${fmtPct(p.capacitacao.pctFaturamento)} do faturamento (teto ${fmtPct(p.capacitacao.teto)}) — ${fmtMoney(p.capacitacao.valor)}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title">Reserva de Caixa &amp; Investimento</span></div>
+      <div class="grid">
+        <div class="card"><div class="card-top-bar" style="background:var(--teal)"></div>
+          <div class="card-label">Reserva Recomendada</div>
+          <div class="card-value">${fmtMoney(d.reserva.recomendadaValor)}</div>
+          <div class="card-sub">${d.reserva.recomendadaMeses}x (equipe + custos fixos) do mês</div>
+        </div>
+        <div class="card"><div class="card-top-bar" style="background:var(--lime2)"></div>
+          <div class="card-label">Caixa Estimado</div>
+          <div class="card-value">${fmtMoney(d.reserva.caixaEstimado)}</div>
+          <div class="card-sub">acumulado desde ago/2025 (estimativa via P&amp;L)</div>
+        </div>
+        <div class="card"><div class="card-top-bar" style="background:var(--green)"></div>
+          <div class="card-label">Previsto de Investimento</div>
+          <div class="card-value pos">${fmtMoney(d.reserva.investimentoPrevisto)}</div>
+          <div class="card-sub">excedente acima da reserva recomendada</div>
+        </div>
+      </div>
+      <div class="note">${d.reserva.aviso}</div>
+      ${d.avisoDadosNaoClassificados ? `<div class="note">⚠️ ${d.avisoDadosNaoClassificados}</div>` : ''}
+    </div>
+
+  </div>`;
+  document.getElementById('app').innerHTML = html;
+}
+
+function renderResumo(d) {
+  const rows = d.meses.map(m => {
+    const abaixo = m.abaixoDoPiso;
+    return `<tr class="${abaixo ? 'row-below-floor' : ''}">
+      <td><strong>${m.mes}</strong></td>
+      <td>${fmtMoney(m.autz.faturamento)}</td>
+      <td class="${m.autz.crescimentoPct>=0?'tag-pos':'tag-neg'}">${fmtPct(m.autz.crescimentoPct)}</td>
+      <td>${fmtMoney(m.wesales.faturamento)}</td>
+      <td class="${m.wesales.crescimentoPct>=0?'tag-pos':'tag-neg'}">${fmtPct(m.wesales.crescimentoPct)}</td>
+      <td><strong>${fmtMoney(m.combinado)}</strong></td>
+      <td>${abaixo ? '⚠️ abaixo do piso' : '✅'}</td>
+    </tr>`;
+  }).join('');
+
+  const html = `
+  <div class="wrap">
+    <div class="section">
+      <div class="section-head"><span class="section-title">Resumo do Ano ${d.anoAtual.ano}</span></div>
+      <div class="grid">
+        <div class="card"><div class="card-top-bar" style="background:var(--teal)"></div>
+          <div class="card-label">Faturamento Autz (YTD)</div>
+          <div class="card-value">${fmtMoney(d.anoAtual.faturamentoAutzYtd)}</div>
+          <div class="card-sub">${d.metas.anualAutz > 0 ? fmtPct(d.anoAtual.pctMetaAutz) + ' da meta anual' : 'meta anual ainda não definida'}</div>
+        </div>
+        <div class="card"><div class="card-top-bar" style="background:var(--lime2)"></div>
+          <div class="card-label">Faturamento We Sales (YTD)</div>
+          <div class="card-value">${fmtMoney(d.anoAtual.faturamentoWeSalesYtd)}</div>
+          <div class="card-sub">${d.metas.anualWeSales > 0 ? fmtPct(d.anoAtual.pctMetaWeSales) + ' da meta anual' : 'meta anual ainda não definida'}</div>
+        </div>
+        <div class="card"><div class="card-top-bar" style="background:var(--orange)"></div>
+          <div class="card-label">Piso Combinado Mensal</div>
+          <div class="card-value">${fmtMoney(d.metas.pisoCombinado)}</div>
+          <div class="card-sub">meta de crescimento ${fmtPct(d.metas.crescimentoMensal)}/mês · churn máx ${fmtPct(d.metas.churnMaximo)}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title">Mês a mês</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Mês</th><th>Autz</th><th>Cresc. Autz</th><th>We Sales</th><th>Cresc. We Sales</th><th>Combinado</th><th>Piso</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('app').innerHTML = html;
+}
+
+render();
+</script>
+</body>
+</html>

@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 const CLIENTS = [
   { slug: 'vista1942', path: '/vista-1942', envPrefix: 'VISTA1942' },
   { slug: 'reforma-tributaria', path: '/reforma-tributaria', envPrefix: 'REFORMATRIBUTARIA' },
+  { slug: 'financeiro', path: '/financeiro', envPrefix: 'FINANCEIRO' },
 ];
 
 const app = express();
