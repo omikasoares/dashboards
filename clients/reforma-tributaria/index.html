@@ -327,6 +327,7 @@ body{ min-height:100vh }
   .stats-grid{ grid-template-columns:1fr 1fr }
   .stat{ padding:14px 16px }
   .stat-value{ font-size:1.3rem }
+  .stat-full{ grid-column:1 / -1 }
 }
 </style>
 </head>
@@ -606,7 +607,7 @@ function renderStats(ev){
         <div class="stat-sub">${capacity-enrolled} vagas restantes</div>
       </div>
     </div>
-    <div class="stat">
+    <div class="stat stat-full">
       <div class="stat-icon" style="background:${lucroTotal>=0?'#ECFDF5':'#FEF2F2'};font-size:1.2rem">${lucroTotal>=0?'💰':'📉'}</div>
       <div>
         <div class="stat-label">Lucro Líquido (realizados)</div>
