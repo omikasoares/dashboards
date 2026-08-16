@@ -124,6 +124,13 @@ tr:last-child td{ border-bottom:none }
 .tag-pos{ color:var(--green); font-weight:700 }
 .tag-neg{ color:var(--red); font-weight:700 }
 .row-below-floor{ background:#FFF7F7 }
+.row-futuro{ opacity:.72 }
+.row-futuro td{ font-style:italic }
+.badge-previsto{
+  display:inline-block; font-size:.58rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase;
+  padding:2px 7px; border-radius:100px; background:#EEF2FF; color:#4F46E5; border:1px solid #C7D2FE;
+  font-style:normal; margin-left:6px; vertical-align:middle;
+}
 
 /* ─── LOADING / EMPTY ─── */
 .loading-wrap{ max-width:1280px; margin:80px auto; text-align:center; color:var(--muted); padding:0 28px }
@@ -365,8 +372,10 @@ function renderPrevisao(d) {
 function renderResumo(d) {
   const rows = d.meses.map(m => {
     const abaixo = m.abaixoDoPiso;
-    return `<tr class="${abaixo ? 'row-below-floor' : ''}">
-      <td><strong>${m.mes}</strong></td>
+    const rowClass = [abaixo ? 'row-below-floor' : '', m.futuro ? 'row-futuro' : ''].filter(Boolean).join(' ');
+    const badge = m.futuro ? ' <span class="badge-previsto">previsto</span>' : '';
+    return `<tr class="${rowClass}">
+      <td><strong>${m.mes}</strong>${badge}</td>
       <td>${fmtMoney(m.autz.faturamento)}</td>
       <td class="${m.autz.crescimentoPct>=0?'tag-pos':'tag-neg'}">${fmtPct(m.autz.crescimentoPct)}</td>
       <td>${fmtMoney(m.wesales.faturamento)}</td>
