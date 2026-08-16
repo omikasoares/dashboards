@@ -528,12 +528,13 @@ async function getDashboardData() {
     const leads = ads ? ads.leads : 0;
     const cpl = leads > 0 ? spend / leads : 0;
     const custoPorVenda = enrolled > 0 ? spend / enrolled : 0;
+    const lucroLiquido = faturamento - spend - outrosCustos;
 
     const [d, m, y] = ev.date.split('/');
     const eventDate = new Date(y, m - 1, d);
     const daysUntil = Math.round((eventDate - todayMidnight) / 86400000);
 
-    return { date: ev.date, city: ev.city, capacity, enrolled, linked, spend, leads, cpl, custoPorVenda, faturamento, outrosCustos, campanhaLinked: !!ads, daysUntil };
+    return { date: ev.date, city: ev.city, capacity, enrolled, linked, spend, leads, cpl, custoPorVenda, faturamento, outrosCustos, lucroLiquido, campanhaLinked: !!ads, daysUntil };
   });
 }
 
@@ -577,6 +578,9 @@ function renderStats(ev){
     return eventDate >= today;
   }) || ev[ev.length - 1]; // Se a turnê inteira acabar, mostra o último evento
 
+  const pastEvents = ev.filter(e => typeof e.daysUntil === 'number' && e.daysUntil < 0);
+  const lucroTotal = pastEvents.reduce((s,e)=>s+(e.lucroLiquido||0),0);
+
   document.getElementById('statsGrid').innerHTML = `
     <div class="stat">
       <div class="stat-icon" style="background:#E6F4F1;font-size:1.2rem">📅</div>
@@ -600,6 +604,14 @@ function renderStats(ev){
         <div class="stat-label">Ocupação geral</div>
         <div class="stat-value" style="color:${p.text}">${pct}%</div>
         <div class="stat-sub">${capacity-enrolled} vagas restantes</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:${lucroTotal>=0?'#ECFDF5':'#FEF2F2'};font-size:1.2rem">${lucroTotal>=0?'💰':'📉'}</div>
+      <div>
+        <div class="stat-label">Lucro Líquido (realizados)</div>
+        <div class="stat-value" style="color:${lucroTotal>=0?'#059669':'#DC2626'}">${fmtBR.format(lucroTotal)}</div>
+        <div class="stat-sub">${pastEvents.length} evento${pastEvents.length===1?'':'s'} já realizado${pastEvents.length===1?'':'s'}</div>
       </div>
     </div>
     <div class="stat">
@@ -692,6 +704,10 @@ function makeCard(ev){
         <div class="ads-item">
           <div class="ads-label">Outros Custos</div>
           <div class="ads-value">${fmtBR.format(ev.outrosCustos)}</div>
+        </div>
+        <div class="ads-item">
+          <div class="ads-label">Lucro Líquido</div>
+          <div class="ads-value" style="color:${ev.lucroLiquido>=0?'#059669':'#DC2626'}">${fmtBR.format(ev.lucroLiquido)}</div>
         </div>
       </div>` : ''}
     </div>`;
