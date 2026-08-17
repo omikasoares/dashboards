@@ -11,10 +11,14 @@ jobs:
 
     steps:
       - name: Deploy on VPS
-        uses: appleboy/ssh-action@v1.0.3
+        uses: Wandalen/wretry.action@master
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            /root/projects/dashboards/deploy.sh
+          action: appleboy/ssh-action@v1.0.3
+          attempt_limit: 3
+          attempt_delay: 15000
+          with: |
+            host: ${{ secrets.VPS_HOST }}
+            username: ${{ secrets.VPS_USER }}
+            key: ${{ secrets.VPS_SSH_KEY }}
+            script: |
+              /root/projects/dashboards/deploy.sh
