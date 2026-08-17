@@ -145,7 +145,6 @@ body{ min-height:100vh }
 }
 .stat-value{
   font-size:1.7rem; font-weight:800; line-height:1.1; margin-top:2px;
-  overflow-wrap:break-word;
 }
 .stat-sub{ font-size:.7rem; color:var(--light); margin-top:2px; font-weight:400 }
 
@@ -621,7 +620,7 @@ function renderStats(ev){
       <div class="stat-icon" style="background:${lucroTotal>=0?'#ECFDF5':'#FEF2F2'};font-size:1.2rem">${lucroTotal>=0?'💰':'📉'}</div>
       <div>
         <div class="stat-label">Lucro Líquido (realizados)</div>
-        <div class="stat-value" style="color:${lucroTotal>=0?'#059669':'#DC2626'}">${fmtBR.format(lucroTotal)}</div>
+        <div class="stat-value" style="color:${lucroTotal>=0?'#059669':'#DC2626'};font-size:1.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${fmtBR.format(lucroTotal)}</div>
         <div class="stat-sub">${pastEvents.length} evento${pastEvents.length===1?'':'s'} já realizado${pastEvents.length===1?'':'s'}</div>
       </div>
     </div>`;
