@@ -133,6 +133,7 @@ body{ min-height:100vh }
   box-shadow:var(--shadow);
   display:flex; align-items:center; gap:16px;
 }
+.stat > div:last-child{ min-width:0 }
 .stat-icon{
   width:46px; height:46px; border-radius:12px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
@@ -144,6 +145,7 @@ body{ min-height:100vh }
 }
 .stat-value{
   font-size:1.7rem; font-weight:800; line-height:1.1; margin-top:2px;
+  overflow-wrap:break-word;
 }
 .stat-sub{ font-size:.7rem; color:var(--light); margin-top:2px; font-weight:400 }
 
