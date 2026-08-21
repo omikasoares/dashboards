@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Revskin – Recompra</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --teal:    #00272C;
+  --lime:    #E9FF4A;
+  --lime2:   #D2E132;
+  --white:   #FFFFFF;
+  --black:   #1A1A1A;
+  --bg:      #F2F4F3;
+  --card:    #FFFFFF;
+  --border:  #E2E8E5;
+  --muted:   #607070;
+  --light:   #A0B0B0;
+
+  --green:   #059669;
+  --yellow:  #D97706;
+  --orange:  #EA580C;
+  --red:     #DC2626;
+
+  --shadow:    0 1px 3px rgba(0,39,44,.07), 0 4px 12px rgba(0,39,44,.05);
+  --shadow-lg: 0 8px 28px rgba(0,39,44,.13);
+}
+
+html{ font-family:'Poppins',sans-serif; background:var(--bg); color:var(--black) }
+body{ min-height:100vh }
+
+/* ─── HEADER ─── */
+.header{
+  background: var(--teal);
+  position: relative;
+  overflow: hidden;
+  padding: 0 40px;
+}
+.header::before{
+  content:'';
+  position:absolute; right:-80px; top:-80px;
+  width:340px; height:340px;
+  border-radius:50%;
+  border: 40px solid rgba(233,255,74,.07);
+  pointer-events:none;
+}
+.header::after{
+  content:'';
+  position:absolute; right:60px; top:-140px;
+  width:260px; height:260px;
+  border-radius:50%;
+  border: 28px solid rgba(233,255,74,.05);
+  pointer-events:none;
+}
+.arc-inner{
+  position:absolute; right:180px; bottom:-90px;
+  width:200px; height:200px;
+  border-radius:50%;
+  border: 20px solid rgba(233,255,74,.06);
+  pointer-events:none;
+}
+
+.header-inner{
+  max-width:1280px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:22px 0; gap:20px; flex-wrap:wrap;
+  position:relative; z-index:1;
+}
+
+.logo-mark{
+  font-family:'Poppins',sans-serif; font-weight:800; font-size:1.4rem;
+  color:var(--white); letter-spacing:.02em;
+}
+.logo-mark span{ color:var(--lime) }
+.tagline{
+  font-size:.72rem; font-weight:300; color:rgba(255,255,255,.5);
+  letter-spacing:.1em; text-transform:uppercase; margin-top:3px;
+}
+
+.header-divider{
+  width:1px; height:38px;
+  background:rgba(255,255,255,.15);
+  flex-shrink:0;
+}
+
+.header-title{
+  font-size:1rem; font-weight:700; color:var(--white);
+  letter-spacing:.06em; text-transform:uppercase;
+}
+.header-subtitle{
+  font-size:.72rem; font-weight:300; color:rgba(255,255,255,.5);
+  margin-top:3px; letter-spacing:.03em;
+}
+.update-badge{
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(233,255,74,.08);
+  border:1px solid rgba(233,255,74,.2);
+  border-radius:100px; padding:5px 14px; margin-top:8px;
+  font-size:.68rem; font-weight:500; color:rgba(255,255,255,.55);
+}
+.pulse{ width:6px; height:6px; border-radius:50%; background:var(--lime); flex-shrink:0 }
+
+/* ─── LAYOUT ─── */
+.wrap{ max-width:1280px; margin:0 auto; padding:0 28px }
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px; margin-top:28px;
+}
+.stat{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:20px 22px;
+  box-shadow:var(--shadow);
+  display:flex; align-items:center; gap:16px;
+}
+.stat > div:last-child{ min-width:0 }
+.stat-icon{
+  width:46px; height:46px; border-radius:12px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem;
+}
+.stat-label{
+  font-size:.65rem; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.08em;
+}
+.stat-value{ font-size:1.7rem; font-weight:800; line-height:1.1; margin-top:2px }
+.stat-sub{ font-size:.7rem; color:var(--light); margin-top:2px; font-weight:400 }
+
+.section{ margin-top:32px; padding-bottom:8px }
+.section-head{ display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap }
+.section-title{
+  font-size:.65rem; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.1em;
+}
+.section-note{ font-size:.72rem; color:var(--light); font-weight:400 }
+
+/* ─── MONTH CARD ─── */
+.month-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px }
+.month-card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:22px;
+  box-shadow:var(--shadow);
+}
+.month-name{ font-size:1.05rem; font-weight:700; color:var(--black); text-transform:capitalize }
+.month-total{ font-size:.72rem; color:var(--muted); margin-top:2px }
+
+.bar-row{ display:flex; align-items:center; gap:10px; margin-top:16px }
+.bar-label{ width:78px; flex-shrink:0; font-size:.68rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em }
+.bar-track{ flex:1; background:#EEF2F1; border-radius:100px; height:10px; overflow:hidden }
+.bar-fill{ height:100%; border-radius:100px }
+.bar-fill.primeira{ background:#607070 }
+.bar-fill.recompra{ background:var(--green) }
+.bar-num{ width:88px; flex-shrink:0; text-align:right; font-size:.78rem; font-weight:700 }
+
+.month-foot{
+  display:flex; justify-content:space-between; align-items:baseline;
+  margin-top:16px; padding-top:12px; border-top:1px dashed var(--border);
+}
+.recompra-pct{ font-size:1.4rem; font-weight:800; color:var(--green) }
+.recompra-pct-label{ font-size:.62rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-weight:700 }
+
+/* ─── TABLE ─── */
+.table-wrap{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; overflow:hidden; box-shadow:var(--shadow);
+}
+table{ width:100%; border-collapse:collapse; font-size:.82rem }
+th{
+  text-align:left; padding:12px 18px; background:var(--teal); color:rgba(255,255,255,.85);
+  font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+}
+th.num, td.num{ text-align:right }
+td{ padding:12px 18px; border-top:1px solid var(--border) }
+tr:nth-child(even) td{ background:#FAFBFB }
+td.month-cell{ font-weight:700; text-transform:capitalize }
+td.green{ color:var(--green); font-weight:700 }
+
+/* ─── NOTE BOX ─── */
+.note-box{
+  background:#FFFBEB; border:1px solid #FDE68A; border-radius:12px;
+  padding:14px 18px; margin-top:20px; font-size:.76rem; color:#92400E; line-height:1.5;
+}
+
+/* ─── FOOTER ─── */
+.footer{
+  text-align:center; padding:32px 24px;
+  font-size:.67rem; color:var(--light); font-weight:400;
+}
+.footer span{ color:var(--lime2); font-weight:600 }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:620px){
+  .header{ padding:0 18px }
+  .wrap{ padding:0 14px }
+  .header-divider{ display:none }
+  .stats-grid{ grid-template-columns:1fr 1fr }
+  .stat{ padding:14px 16px }
+  .stat-value{ font-size:1.3rem }
+  .bar-label{ width:60px; font-size:.6rem }
+  .bar-num{ width:70px; font-size:.68rem }
+  table{ font-size:.72rem }
+  th,td{ padding:9px 10px }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="arc-inner"></div>
+  <div class="header-inner">
+    <div>
+      <div class="logo-mark">rev<span>skin</span></div>
+      <div class="tagline">Painel de Recompra</div>
+    </div>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Novas Vendas × Recompras</div>
+      <div class="header-subtitle">Funil Cliente Clinicaweb · RD Station CRM</div>
+      <div class="update-badge">
+        <span class="pulse"></span>
+        <span>Dados até 20/08/2026</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-icon" style="background:#E6F4F1">🛍️</div>
+      <div>
+        <div class="stat-label">Vendas no período</div>
+        <div class="stat-value" style="color:#00272C">326</div>
+        <div class="stat-sub">Maio a agosto de 2026</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#ECFDF5">🔁</div>
+      <div>
+        <div class="stat-label">Recompras</div>
+        <div class="stat-value" style="color:#059669">45</div>
+        <div class="stat-sub">13,8% do total de vendas</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#E6F4F1">🆕</div>
+      <div>
+        <div class="stat-label">Primeira compra</div>
+        <div class="stat-value" style="color:#00272C">281</div>
+        <div class="stat-sub">Clientes novos no período</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#FAFBE6">💰</div>
+      <div>
+        <div class="stat-label">Faturamento recompra</div>
+        <div class="stat-value" style="color:#D97706;font-size:1.3rem">R$ 26.301,95</div>
+        <div class="stat-sub">de R$ 239.344,86 no total</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Por mês</span>
+      <span class="section-note">Taxa de recompra crescendo mês a mês — de 5,4% em maio para 28,4% em agosto</span>
+    </div>
+    <div class="month-grid">
+
+      <div class="month-card">
+        <div class="month-name">Maio 2026</div>
+        <div class="month-total">74 vendas · R$ 52.486,24</div>
+        <div class="bar-row">
+          <span class="bar-label">Primeira</span>
+          <div class="bar-track"><div class="bar-fill primeira" style="width:94.6%"></div></div>
+          <span class="bar-num">70 · R$ 51.265</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Recompra</span>
+          <div class="bar-track"><div class="bar-fill recompra" style="width:5.4%"></div></div>
+          <span class="bar-num">4 · R$ 1.221</span>
+        </div>
+        <div class="month-foot">
+          <div><div class="recompra-pct">5,4%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="month-name">Junho 2026</div>
+        <div class="month-total">79 vendas · R$ 58.035,40</div>
+        <div class="bar-row">
+          <span class="bar-label">Primeira</span>
+          <div class="bar-track"><div class="bar-fill primeira" style="width:87.3%"></div></div>
+          <span class="bar-num">69 · R$ 52.937</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Recompra</span>
+          <div class="bar-track"><div class="bar-fill recompra" style="width:12.7%"></div></div>
+          <span class="bar-num">10 · R$ 5.099</span>
+        </div>
+        <div class="month-foot">
+          <div><div class="recompra-pct">12,7%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="month-name">Julho 2026</div>
+        <div class="month-total">106 vendas · R$ 80.076,77</div>
+        <div class="bar-row">
+          <span class="bar-label">Primeira</span>
+          <div class="bar-track"><div class="bar-fill primeira" style="width:88.7%"></div></div>
+          <span class="bar-num">94 · R$ 74.381</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Recompra</span>
+          <div class="bar-track"><div class="bar-fill recompra" style="width:11.3%"></div></div>
+          <span class="bar-num">12 · R$ 5.696</span>
+        </div>
+        <div class="month-foot">
+          <div><div class="recompra-pct">11,3%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
+        </div>
+      </div>
+
+      <div class="month-card">
+        <div class="month-name">Agosto 2026 <span style="font-size:.6rem;color:var(--light);font-weight:400;text-transform:none">(parcial, até dia 20)</span></div>
+        <div class="month-total">67 vendas · R$ 48.746,45</div>
+        <div class="bar-row">
+          <span class="bar-label">Primeira</span>
+          <div class="bar-track"><div class="bar-fill primeira" style="width:71.6%"></div></div>
+          <span class="bar-num">48 · R$ 34.460</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Recompra</span>
+          <div class="bar-track"><div class="bar-fill recompra" style="width:28.4%"></div></div>
+          <span class="bar-num">19 · R$ 14.286</span>
+        </div>
+        <div class="month-foot">
+          <div><div class="recompra-pct">28,4%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Tabela detalhada</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th class="num">Primeira compra</th>
+            <th class="num">Recompra</th>
+            <th class="num">Total vendas</th>
+            <th class="num">Faturamento</th>
+            <th class="num">% recompra</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="month-cell">Maio 2026</td>
+            <td class="num">70</td>
+            <td class="num">4</td>
+            <td class="num">74</td>
+            <td class="num">R$ 52.486,24</td>
+            <td class="num green">5,4%</td>
+          </tr>
+          <tr>
+            <td class="month-cell">Junho 2026</td>
+            <td class="num">69</td>
+            <td class="num">10</td>
+            <td class="num">79</td>
+            <td class="num">R$ 58.035,40</td>
+            <td class="num green">12,7%</td>
+          </tr>
+          <tr>
+            <td class="month-cell">Julho 2026</td>
+            <td class="num">94</td>
+            <td class="num">12</td>
+            <td class="num">106</td>
+            <td class="num">R$ 80.076,77</td>
+            <td class="num green">11,3%</td>
+          </tr>
+          <tr>
+            <td class="month-cell">Agosto 2026 (parcial)</td>
+            <td class="num">48</td>
+            <td class="num">19</td>
+            <td class="num">67</td>
+            <td class="num">R$ 48.746,45</td>
+            <td class="num green">28,4%</td>
+          </tr>
+          <tr style="font-weight:700">
+            <td class="month-cell">Total</td>
+            <td class="num">281</td>
+            <td class="num">45</td>
+            <td class="num">326</td>
+            <td class="num">R$ 239.344,86</td>
+            <td class="num green">13,8%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="note-box">
+    ⚠️ <strong>Como a recompra é calculada:</strong> o RD CRM não marca nativamente quem é cliente recorrente. Esse painel identifica recompra agrupando as negociações <em>ganhas</em> do funil "Cliente Clinicaweb" pela mesma organização/paciente — a 1ª venda de cada paciente conta como "primeira compra", a partir da 2ª conta como "recompra".<br/><br/>
+    📊 <strong>Sobre "atendimentos":</strong> a reunião também pediu comparar recompra com volume de atendimentos (RD Conversas). Ainda não temos a integração de Conversas da Revskin conectada — assim que tivermos acesso, esse dado entra no painel.<br/><br/>
+    🔄 <strong>Atualização:</strong> este snapshot reflete os dados até 20/08/2026. Para deixar 100% automático (atualizando sozinho), falta só criar a credencial do RD Station da Revskin no n8n — é rápido, e depois disso o painel passa a se atualizar sozinho como os outros clientes.
+  </div>
+</div>
+
+<div class="footer">
+  Dashboard gerado por <span>Autz</span>
+</div>
+
+</body>
+</html>
