@@ -101,7 +101,8 @@ body{ min-height:100vh }
   border-radius:100px; padding:5px 14px; margin-top:8px;
   font-size:.68rem; font-weight:500; color:rgba(255,255,255,.55);
 }
-.pulse{ width:6px; height:6px; border-radius:50%; background:var(--lime); flex-shrink:0 }
+.pulse{ width:6px; height:6px; border-radius:50%; background:var(--lime); flex-shrink:0; animation:pulse 1.6s ease-in-out infinite }
+@keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.3} }
 
 /* ─── LAYOUT ─── */
 .wrap{ max-width:1280px; margin:0 auto; padding:0 28px }
@@ -138,23 +139,31 @@ body{ min-height:100vh }
 }
 .section-note{ font-size:.72rem; color:var(--light); font-weight:400 }
 
-/* ─── MONTH CARD ─── */
-.month-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px }
-.month-card{
+/* ─── CARD (categorias / vendedoras) ─── */
+.card-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px }
+.rcard{
   background:var(--card); border:1px solid var(--border);
   border-radius:16px; padding:22px;
   box-shadow:var(--shadow);
 }
-.month-name{ font-size:1.05rem; font-weight:700; color:var(--black); text-transform:capitalize }
-.month-total{ font-size:.72rem; color:var(--muted); margin-top:2px }
+.rcard-top{ display:flex; align-items:center; justify-content:space-between; gap:10px }
+.rcard-name{ font-size:1.05rem; font-weight:700; color:var(--black) }
+.rcard-weight{
+  font-size:.62rem; font-weight:700; padding:3px 9px; border-radius:100px;
+  text-transform:uppercase; letter-spacing:.04em;
+}
+.weight-100{ background:#ECFDF5; color:var(--green) }
+.weight-50{ background:#FFF7ED; color:var(--orange) }
+.weight-0{ background:#F1F5F4; color:var(--muted) }
+.rcard-desc{ font-size:.72rem; color:var(--light); margin-top:6px; line-height:1.4 }
+.rcard-value{ font-size:2rem; font-weight:800; margin-top:16px; color:var(--black) }
+.rcard-value-label{ font-size:.65rem; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-top:2px }
 
 .bar-row{ display:flex; align-items:center; gap:10px; margin-top:16px }
 .bar-label{ width:78px; flex-shrink:0; font-size:.68rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em }
 .bar-track{ flex:1; background:#EEF2F1; border-radius:100px; height:10px; overflow:hidden }
 .bar-fill{ height:100%; border-radius:100px }
-.bar-fill.primeira{ background:#607070 }
-.bar-fill.recompra{ background:var(--green) }
-.bar-num{ width:88px; flex-shrink:0; text-align:right; font-size:.78rem; font-weight:700 }
+.bar-num{ width:100px; flex-shrink:0; text-align:right; font-size:.78rem; font-weight:700 }
 
 .month-foot{
   display:flex; justify-content:space-between; align-items:baseline;
@@ -163,26 +172,23 @@ body{ min-height:100vh }
 .recompra-pct{ font-size:1.4rem; font-weight:800; color:var(--green) }
 .recompra-pct-label{ font-size:.62rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-weight:700 }
 
-/* ─── TABLE ─── */
-.table-wrap{
-  background:var(--card); border:1px solid var(--border);
-  border-radius:16px; overflow:hidden; box-shadow:var(--shadow);
-}
-table{ width:100%; border-collapse:collapse; font-size:.82rem }
-th{
-  text-align:left; padding:12px 18px; background:var(--teal); color:rgba(255,255,255,.85);
-  font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
-}
-th.num, td.num{ text-align:right }
-td{ padding:12px 18px; border-top:1px solid var(--border) }
-tr:nth-child(even) td{ background:#FAFBFB }
-td.month-cell{ font-weight:700; text-transform:capitalize }
-td.green{ color:var(--green); font-weight:700 }
-
 /* ─── NOTE BOX ─── */
 .note-box{
   background:#FFFBEB; border:1px solid #FDE68A; border-radius:12px;
   padding:14px 18px; margin-top:20px; font-size:.76rem; color:#92400E; line-height:1.5;
+}
+
+/* ─── LOADING / ERROR ─── */
+.loading-wrap{ text-align:center; padding:80px 20px; color:var(--muted) }
+.spinner{
+  width:28px; height:28px; border-radius:50%;
+  border:3px solid var(--border); border-top-color:var(--teal);
+  margin:0 auto 14px; animation:spin .8s linear infinite;
+}
+@keyframes spin{ to{ transform:rotate(360deg) } }
+.error-box{
+  background:#FEF2F2; border:1px solid #FECACA; color:#991B1B;
+  border-radius:12px; padding:18px 20px; margin-top:28px; font-size:.82rem;
 }
 
 /* ─── FOOTER ─── */
@@ -201,9 +207,7 @@ td.green{ color:var(--green); font-weight:700 }
   .stat{ padding:14px 16px }
   .stat-value{ font-size:1.3rem }
   .bar-label{ width:60px; font-size:.6rem }
-  .bar-num{ width:70px; font-size:.68rem }
-  table{ font-size:.72rem }
-  th,td{ padding:9px 10px }
+  .bar-num{ width:80px; font-size:.68rem }
 }
 </style>
 </head>
@@ -218,265 +222,222 @@ td.green{ color:var(--green); font-weight:700 }
     </div>
     <div class="header-divider"></div>
     <div>
-      <div class="header-title">Novas Vendas × Recompras</div>
-      <div class="header-subtitle">Funil Cliente Clinicaweb · RD Station CRM</div>
+      <div class="header-title">Taxa de Recompra Oficial</div>
+      <div class="header-subtitle">Funil Cliente Clinicaweb · RD Station CRM · janela de 60–90 dias</div>
       <div class="update-badge">
         <span class="pulse"></span>
-        <span>Dados até 20/08/2026</span>
+        <span id="update-text">Carregando dados ao vivo…</span>
       </div>
     </div>
   </div>
 </div>
 
 <div class="wrap">
-  <div class="stats-grid">
-    <div class="stat">
-      <div class="stat-icon" style="background:#E6F4F1">🛍️</div>
-      <div>
-        <div class="stat-label">Vendas no período</div>
-        <div class="stat-value" style="color:#00272C">326</div>
-        <div class="stat-sub">Maio a agosto de 2026</div>
-      </div>
-    </div>
-    <div class="stat">
-      <div class="stat-icon" style="background:#ECFDF5">🔁</div>
-      <div>
-        <div class="stat-label">Recompras</div>
-        <div class="stat-value" style="color:#059669">45</div>
-        <div class="stat-sub">13,8% do total de vendas</div>
-      </div>
-    </div>
-    <div class="stat">
-      <div class="stat-icon" style="background:#E6F4F1">🆕</div>
-      <div>
-        <div class="stat-label">Primeira compra</div>
-        <div class="stat-value" style="color:#00272C">281</div>
-        <div class="stat-sub">Clientes novos no período</div>
-      </div>
-    </div>
-    <div class="stat">
-      <div class="stat-icon" style="background:#FAFBE6">💰</div>
-      <div>
-        <div class="stat-label">Faturamento recompra</div>
-        <div class="stat-value" style="color:#D97706;font-size:1.3rem">R$ 26.301,95</div>
-        <div class="stat-sub">de R$ 239.344,86 no total</div>
-      </div>
-    </div>
+  <div id="loading-state" class="loading-wrap">
+    <div class="spinner"></div>
+    <div>Buscando dados do CRM…</div>
   </div>
 
-  <div class="section">
-    <div class="section-head">
-      <span class="section-title">Por mês</span>
-      <span class="section-note">Taxa de recompra crescendo mês a mês — de 5,4% em maio para 28,4% em agosto</span>
+  <div id="dashboard-content" style="display:none">
+
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-icon" style="background:#E6F4F1">🩺</div>
+        <div>
+          <div class="stat-label">Pacientes na carteira</div>
+          <div class="stat-value" id="stat-pacientes" style="color:#00272C">–</div>
+          <div class="stat-sub" id="stat-vendas-sub">–</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" style="background:#ECFDF5">🔁</div>
+        <div>
+          <div class="stat-label">Taxa de recompra oficial</div>
+          <div class="stat-value" id="stat-taxa" style="color:#059669">–</div>
+          <div class="stat-sub" id="stat-taxa-sub">–</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" style="background:#FAFBE6">⏳</div>
+        <div>
+          <div class="stat-label">Elegíveis sem recompra</div>
+          <div class="stat-value" id="stat-sem-recompra" style="color:#00272C">–</div>
+          <div class="stat-sub">Passaram de 60 dias, em acompanhamento</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" style="background:#FFFBE6">💰</div>
+        <div>
+          <div class="stat-label">Faturamento de recompra</div>
+          <div class="stat-value" id="stat-faturamento" style="color:#D97706;font-size:1.3rem">–</div>
+          <div class="stat-sub" id="stat-faturamento-sub">–</div>
+        </div>
+      </div>
     </div>
-    <div class="month-grid">
 
-      <div class="month-card">
-        <div class="month-name">Maio 2026</div>
-        <div class="month-total">74 vendas · R$ 52.486,24</div>
-        <div class="bar-row">
-          <span class="bar-label">Primeira</span>
-          <div class="bar-track"><div class="bar-fill primeira" style="width:94.6%"></div></div>
-          <span class="bar-num">70 · R$ 51.265</span>
-        </div>
-        <div class="bar-row">
-          <span class="bar-label">Recompra</span>
-          <div class="bar-track"><div class="bar-fill recompra" style="width:5.4%"></div></div>
-          <span class="bar-num">4 · R$ 1.221</span>
-        </div>
-        <div class="month-foot">
-          <div><div class="recompra-pct">5,4%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
-        </div>
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">Categorias de recompra</span>
+        <span class="section-note">Critério oficial RevSkin — janela de elegibilidade de 60 a 90 dias desde a última compra</span>
       </div>
-
-      <div class="month-card">
-        <div class="month-name">Junho 2026</div>
-        <div class="month-total">79 vendas · R$ 58.035,40</div>
-        <div class="bar-row">
-          <span class="bar-label">Primeira</span>
-          <div class="bar-track"><div class="bar-fill primeira" style="width:87.3%"></div></div>
-          <span class="bar-num">69 · R$ 52.937</span>
-        </div>
-        <div class="bar-row">
-          <span class="bar-label">Recompra</span>
-          <div class="bar-track"><div class="bar-fill recompra" style="width:12.7%"></div></div>
-          <span class="bar-num">10 · R$ 5.099</span>
-        </div>
-        <div class="month-foot">
-          <div><div class="recompra-pct">12,7%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
-        </div>
-      </div>
-
-      <div class="month-card">
-        <div class="month-name">Julho 2026</div>
-        <div class="month-total">106 vendas · R$ 80.076,77</div>
-        <div class="bar-row">
-          <span class="bar-label">Primeira</span>
-          <div class="bar-track"><div class="bar-fill primeira" style="width:88.7%"></div></div>
-          <span class="bar-num">94 · R$ 74.381</span>
-        </div>
-        <div class="bar-row">
-          <span class="bar-label">Recompra</span>
-          <div class="bar-track"><div class="bar-fill recompra" style="width:11.3%"></div></div>
-          <span class="bar-num">12 · R$ 5.696</span>
-        </div>
-        <div class="month-foot">
-          <div><div class="recompra-pct">11,3%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
-        </div>
-      </div>
-
-      <div class="month-card">
-        <div class="month-name">Agosto 2026 <span style="font-size:.6rem;color:var(--light);font-weight:400;text-transform:none">(parcial, até dia 20)</span></div>
-        <div class="month-total">67 vendas · R$ 48.746,45</div>
-        <div class="bar-row">
-          <span class="bar-label">Primeira</span>
-          <div class="bar-track"><div class="bar-fill primeira" style="width:71.6%"></div></div>
-          <span class="bar-num">48 · R$ 34.460</span>
-        </div>
-        <div class="bar-row">
-          <span class="bar-label">Recompra</span>
-          <div class="bar-track"><div class="bar-fill recompra" style="width:28.4%"></div></div>
-          <span class="bar-num">19 · R$ 14.286</span>
-        </div>
-        <div class="month-foot">
-          <div><div class="recompra-pct">28,4%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
-        </div>
-      </div>
-
+      <div class="card-grid" id="categorias-grid"></div>
     </div>
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">Por vendedora</span>
+        <span class="section-note" id="vendedora-note">–</span>
+      </div>
+      <div class="card-grid" id="vendedoras-grid"></div>
+    </div>
+
+    <div class="note-box">
+      ⚠️ <strong>Como a taxa é calculada:</strong> ao completar 60 dias desde a última compra, o paciente entra na janela de elegibilidade de recompra. Recompra <strong>antes de 60 dias</strong> ou <strong>entre 60–90 dias</strong> conta com peso 100%; recompra <strong>após 90 dias</strong> (reativação tardia) conta com peso 50%. Taxa = soma ponderada de recompras ÷ total de pacientes elegíveis no período.<br/><br/>
+      🔄 <strong>Atualização:</strong> este painel busca os dados direto do RD CRM toda vez que a página é aberta — não precisa de sincronização manual.
+    </div>
+
   </div>
 
-  <div class="section">
-    <div class="section-head">
-      <span class="section-title">Por vendedora</span>
-      <span class="section-note">Patrícia lidera em taxa de recompra (17,6%), à frente de Fernanda (12%) e Mara (10,3%)</span>
-    </div>
-    <div class="month-grid">
-
-      <div class="month-card">
-        <div class="month-name">Patrícia</div>
-        <div class="month-total">131 vendas · R$ 90.959,34</div>
-        <div class="bar-row">
-          <span class="bar-label">Primeira</span>
-          <div class="bar-track"><div class="bar-fill primeira" style="width:82.4%"></div></div>
-          <span class="bar-num">108</span>
-        </div>
-        <div class="bar-row">
-          <span class="bar-label">Recompra</span>
-          <div class="bar-track"><div class="bar-fill recompra" style="width:17.6%"></div></div>
-          <span class="bar-num">23 · R$ 14.880</span>
-        </div>
-        <div class="month-foot">
-          <div><div class="recompra-pct">17,6%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
-        </div>
-      </div>
-
-      <div class="month-card">
-        <div class="month-name">Fernanda <span style="font-size:.6rem;color:var(--light);font-weight:400;text-transform:none">(cadastrada como Thais Teixeira)</span></div>
-        <div class="month-total">117 vendas · R$ 84.187,32</div>
-        <div class="bar-row">
-          <span class="bar-label">Primeira</span>
-          <div class="bar-track"><div class="bar-fill primeira" style="width:88%"></div></div>
-          <span class="bar-num">103</span>
-        </div>
-        <div class="bar-row">
-          <span class="bar-label">Recompra</span>
-          <div class="bar-track"><div class="bar-fill recompra" style="width:12%"></div></div>
-          <span class="bar-num">14 · R$ 6.716</span>
-        </div>
-        <div class="month-foot">
-          <div><div class="recompra-pct">12%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
-        </div>
-      </div>
-
-      <div class="month-card">
-        <div class="month-name">Mara</div>
-        <div class="month-total">78 vendas · R$ 64.198,20</div>
-        <div class="bar-row">
-          <span class="bar-label">Primeira</span>
-          <div class="bar-track"><div class="bar-fill primeira" style="width:89.7%"></div></div>
-          <span class="bar-num">70</span>
-        </div>
-        <div class="bar-row">
-          <span class="bar-label">Recompra</span>
-          <div class="bar-track"><div class="bar-fill recompra" style="width:10.3%"></div></div>
-          <span class="bar-num">8 · R$ 4.707</span>
-        </div>
-        <div class="month-foot">
-          <div><div class="recompra-pct">10,3%</div><div class="recompra-pct-label">Taxa de recompra</div></div>
-        </div>
-      </div>
-
-    </div>
+  <div id="error-state" class="error-box" style="display:none">
+    Não foi possível carregar os dados agora. Atualize a página em alguns instantes.
   </div>
-
-  <div class="section">
-    <div class="section-head">
-      <span class="section-title">Tabela detalhada</span>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Mês</th>
-            <th class="num">Primeira compra</th>
-            <th class="num">Recompra</th>
-            <th class="num">Total vendas</th>
-            <th class="num">Faturamento</th>
-            <th class="num">% recompra</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="month-cell">Maio 2026</td>
-            <td class="num">70</td>
-            <td class="num">4</td>
-            <td class="num">74</td>
-            <td class="num">R$ 52.486,24</td>
-            <td class="num green">5,4%</td>
-          </tr>
-          <tr>
-            <td class="month-cell">Junho 2026</td>
-            <td class="num">69</td>
-            <td class="num">10</td>
-            <td class="num">79</td>
-            <td class="num">R$ 58.035,40</td>
-            <td class="num green">12,7%</td>
-          </tr>
-          <tr>
-            <td class="month-cell">Julho 2026</td>
-            <td class="num">94</td>
-            <td class="num">12</td>
-            <td class="num">106</td>
-            <td class="num">R$ 80.076,77</td>
-            <td class="num green">11,3%</td>
-          </tr>
-          <tr>
-            <td class="month-cell">Agosto 2026 (parcial)</td>
-            <td class="num">48</td>
-            <td class="num">19</td>
-            <td class="num">67</td>
-            <td class="num">R$ 48.746,45</td>
-            <td class="num green">28,4%</td>
-          </tr>
-          <tr style="font-weight:700">
-            <td class="month-cell">Total</td>
-            <td class="num">281</td>
-            <td class="num">45</td>
-            <td class="num">326</td>
-            <td class="num">R$ 239.344,86</td>
-            <td class="num green">13,8%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
 </div>
 
 <div class="footer">
   Feito com 🖤 por Autz!
 </div>
+
+<script>
+const WEBHOOK_URL = 'https://n8n.autz.com.br/webhook/revskin-stats';
+
+function formatBRL(n) {
+  const num = Number(n) || 0;
+  const fixed = num.toFixed(2);
+  const parts = fixed.split('.');
+  const withDots = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return 'R$ ' + withDots + ',' + parts[1];
+}
+
+function pct(n) {
+  return (n * 100).toFixed(1).replace('.', ',');
+}
+
+function pctCss(part, total) {
+  if (!total) return '0.0';
+  return (part / total * 100).toFixed(1);
+}
+
+function taxaVendedora(v) {
+  const num = v.antecipada * 1.0 + v.janela * 1.0 + v.tardia * 0.5;
+  const den = v.antecipada + v.janela + v.tardia + v.semRecompra;
+  return den ? num / den : 0;
+}
+
+function render(data) {
+  document.getElementById('loading-state').style.display = 'none';
+  document.getElementById('dashboard-content').style.display = 'block';
+
+  const cat = data.categorias || {};
+  const totalRecompras = cat.antecipada + cat.janela + cat.tardia;
+
+  document.getElementById('update-text').textContent = 'Dados ao vivo · ' + data.updatedAt;
+  document.getElementById('stat-pacientes').textContent = data.totalPacientes;
+  document.getElementById('stat-vendas-sub').textContent = data.totalDeals + ' vendas no total (todas as compras)';
+  document.getElementById('stat-taxa').textContent = pct(data.taxaRecompra) + '%';
+  document.getElementById('stat-taxa-sub').textContent = data.numerador.toFixed(1).replace('.', ',') + ' ponderado ÷ ' + data.denominador + ' elegíveis';
+  document.getElementById('stat-sem-recompra').textContent = cat.semRecompra;
+  document.getElementById('stat-faturamento').textContent = formatBRL(data.faturamentoRecompra);
+  document.getElementById('stat-faturamento-sub').textContent = 'de ' + formatBRL(data.faturamentoTotal) + ' no total';
+
+  const categorias = [
+    { key: 'antecipada', nome: 'Recompra antecipada', desc: 'Nova compra antes de completar 60 dias da anterior', peso: '100%', weightClass: 'weight-100', color: '#607070' },
+    { key: 'janela', nome: 'Janela principal', desc: 'Nova compra entre 60 e 90 dias da anterior', peso: '100%', weightClass: 'weight-100', color: 'var(--green)' },
+    { key: 'tardia', nome: 'Tardia / reativação', desc: 'Nova compra depois de 90 dias da anterior', peso: '50%', weightClass: 'weight-50', color: '#D97706' },
+    { key: 'semRecompra', nome: 'Elegíveis sem recompra', desc: 'Já passaram de 60 dias, ainda em acompanhamento', peso: '0%', weightClass: 'weight-0', color: '#A0B0B0' }
+  ];
+
+  const catGrid = document.getElementById('categorias-grid');
+  catGrid.innerHTML = categorias.map(function(c) {
+    const value = cat[c.key] || 0;
+    const share = pctCss(value, data.denominador);
+    return '\n      <div class="rcard">' +
+      '\n        <div class="rcard-top">' +
+      '\n          <div class="rcard-name">' + c.nome + '</div>' +
+      '\n          <div class="rcard-weight ' + c.weightClass + '">peso ' + c.peso + '</div>' +
+      '\n        </div>' +
+      '\n        <div class="rcard-desc">' + c.desc + '</div>' +
+      '\n        <div class="rcard-value">' + value + '</div>' +
+      '\n        <div class="rcard-value-label">pacientes</div>' +
+      '\n        <div class="bar-row">' +
+      '\n          <div class="bar-track"><div class="bar-fill" style="width:' + share + '%;background:' + c.color + '"></div></div>' +
+      '\n          <span class="bar-num">' + share.replace('.', ',') + '% do total</span>' +
+      '\n        </div>' +
+      '\n      </div>';
+  }).join('');
+
+  const vendAgg = data.vendAgg || {};
+  const vendedoras = Object.keys(vendAgg).sort(function(a, b) {
+    return taxaVendedora(vendAgg[b]) - taxaVendedora(vendAgg[a]);
+  });
+
+  const aliases = { 'Fernanda': ' <span style="font-size:.6rem;color:var(--light);font-weight:400;text-transform:none">(cadastrada como Thais Teixeira)</span>' };
+
+  if (vendedoras.length) {
+    const leaderRate = pct(taxaVendedora(vendAgg[vendedoras[0]]));
+    let note = vendedoras[0] + ' lidera em taxa de recompra (' + leaderRate + '%)';
+    if (vendedoras.length > 1) {
+      note += ', à frente de ' + vendedoras.slice(1).map(function(v) {
+        return v + ' (' + pct(taxaVendedora(vendAgg[v])) + '%)';
+      }).join(' e ');
+    }
+    document.getElementById('vendedora-note').textContent = note;
+  }
+
+  const vendGrid = document.getElementById('vendedoras-grid');
+  vendGrid.innerHTML = vendedoras.map(function(v) {
+    const a = vendAgg[v];
+    const total = a.antecipada + a.janela + a.tardia + a.semRecompra;
+    const taxa = pct(taxaVendedora(a));
+    const alias = aliases[v] || '';
+    return '\n      <div class="rcard">' +
+      '\n        <div class="rcard-top">' +
+      '\n          <div class="rcard-name">' + v + alias + '</div>' +
+      '\n        </div>' +
+      '\n        <div class="rcard-desc">' + total + ' pacientes na carteira · ' + formatBRL(a.faturamentoRecompra) + ' em recompra</div>' +
+      '\n        <div class="bar-row">' +
+      '\n          <span class="bar-label">Antecip.</span>' +
+      '\n          <div class="bar-track"><div class="bar-fill" style="width:' + pctCss(a.antecipada, total) + '%;background:#607070"></div></div>' +
+      '\n          <span class="bar-num">' + a.antecipada + '</span>' +
+      '\n        </div>' +
+      '\n        <div class="bar-row">' +
+      '\n          <span class="bar-label">Janela</span>' +
+      '\n          <div class="bar-track"><div class="bar-fill" style="width:' + pctCss(a.janela, total) + '%;background:var(--green)"></div></div>' +
+      '\n          <span class="bar-num">' + a.janela + '</span>' +
+      '\n        </div>' +
+      '\n        <div class="bar-row">' +
+      '\n          <span class="bar-label">Tardia</span>' +
+      '\n          <div class="bar-track"><div class="bar-fill" style="width:' + pctCss(a.tardia, total) + '%;background:#D97706"></div></div>' +
+      '\n          <span class="bar-num">' + a.tardia + '</span>' +
+      '\n        </div>' +
+      '\n        <div class="month-foot">' +
+      '\n          <div><div class="recompra-pct">' + taxa + '%</div><div class="recompra-pct-label">Taxa de recompra</div></div>' +
+      '\n        </div>' +
+      '\n      </div>';
+  }).join('');
+}
+
+fetch(WEBHOOK_URL)
+  .then(function(res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  })
+  .then(render)
+  .catch(function(err) {
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('error-state').style.display = 'block';
+    console.error('Erro ao carregar painel Revskin:', err);
+  });
+</script>
 
 </body>
 </html>
