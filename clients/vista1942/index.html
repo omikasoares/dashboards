@@ -674,7 +674,9 @@ function drawDealsCharts(data){
   });
 
   // IMOB vs PEC — VGV total (sem filtro de won)
-  var canais = groupBy(data, function(d){ return d.canal || '(Não mapeado)'; });
+  // Sem colchete [XXX] no nome (parse_status='falhou') = venda direta/interna = PEC.
+  // Com colchete mas imobiliária não cadastrada = precisa de mapeamento.
+  var canais = groupBy(data, function(d){ return d.canal || (d.parse_status==='falhou' ? 'PEC' : '(Não mapeado)'); });
   var canalLabels = Object.keys(canais).sort();
   var canalVGV = canalLabels.map(function(c){ return sumField(canais[c],'total_price'); });
   var canalCount = canalLabels.map(function(c){ return canais[c].length; });
@@ -720,8 +722,14 @@ function renderEmpreendimentoTable(data){
     '</table></div>';
 }
 
+function imobFallbackLabel(d){
+  // Sem colchete [XXX] no nome (parse_status='falhou') = venda direta/interna, PEC legítimo.
+  // Com colchete mas imobiliária não cadastrada em `imobiliarias` = precisa de mapeamento.
+  return d.parse_status === 'falhou' ? 'PEC (Vendas Internas)' : '(Não mapeado)';
+}
+
 function renderImobiliariaTable(data){
-  var imobs = groupBy(data, function(d){ return d.imobiliaria_name || '(Não mapeado)'; });
+  var imobs = groupBy(data, function(d){ return d.imobiliaria_name || imobFallbackLabel(d); });
   var sorted = Object.keys(imobs).sort(function(a,b){ return sumField(imobs[b],'total_price') - sumField(imobs[a],'total_price'); });
   var rows = '', grandTotal=0, grandVGV=0;
 
@@ -733,6 +741,7 @@ function renderImobiliariaTable(data){
     var canal = items[0] ? items[0].canal : '';
     var canalBadge = canal==='IMOB' ? '<span class="badge-sm badge-imob">IMOB</span>' :
                      canal==='PEC'  ? '<span class="badge-sm badge-pec">PEC</span>' :
+                     imob==='PEC (Vendas Internas)' ? '<span class="badge-sm badge-pec">PEC</span>' :
                      imob==='(Não mapeado)' ? '<span class="badge-sm badge-unmapped">SEM MAPEAMENTO</span>' : '';
     var vendedores = [];
     items.forEach(function(d){ if(d.owner_name && d.owner_name!=='PEC' && vendedores.indexOf(d.owner_name)===-1) vendedores.push(d.owner_name); });
