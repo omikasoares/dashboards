@@ -102,6 +102,7 @@ table.dtbl tfoot td{background:#F7FAF9;font-weight:800;border-top:2px solid var(
 .badge-pec{background:#FAFBE6;color:#6B7100}
 .badge-falhou{background:#FEF2F2;color:#DC2626}
 .badge-revisao{background:#FFFBEB;color:#D97706}
+.badge-unmapped{background:#FEF2F2;color:#DC2626}
 
 /* ─── EMPTY / LOADING ─── */
 .loading-wrap{max-width:1280px;margin:80px auto;text-align:center;color:var(--muted);padding:0 28px}
@@ -673,11 +674,11 @@ function drawDealsCharts(data){
   });
 
   // IMOB vs PEC — VGV total (sem filtro de won)
-  var canais = groupBy(data, function(d){ return d.canal || '(PEC - Venda Interna)'; });
+  var canais = groupBy(data, function(d){ return d.canal || '(Não mapeado)'; });
   var canalLabels = Object.keys(canais).sort();
   var canalVGV = canalLabels.map(function(c){ return sumField(canais[c],'total_price'); });
   var canalCount = canalLabels.map(function(c){ return canais[c].length; });
-  var canalColors = canalLabels.map(function(c){ return c==='IMOB'?'#00272C': c==='PEC'?'#D2E132':'#A0B0B0'; });
+  var canalColors = canalLabels.map(function(c){ return c==='IMOB'?'#00272C': c==='PEC'?'#D2E132':'#DC2626'; });
 
   makeChart('chartCanal', {
     type:'doughnut',
@@ -720,7 +721,7 @@ function renderEmpreendimentoTable(data){
 }
 
 function renderImobiliariaTable(data){
-  var imobs = groupBy(data, function(d){ return d.imobiliaria_name || (d.canal==='PEC' ? 'PEC' : '(PEC)'); });
+  var imobs = groupBy(data, function(d){ return d.imobiliaria_name || '(Não mapeado)'; });
   var sorted = Object.keys(imobs).sort(function(a,b){ return sumField(imobs[b],'total_price') - sumField(imobs[a],'total_price'); });
   var rows = '', grandTotal=0, grandVGV=0;
 
@@ -731,7 +732,8 @@ function renderImobiliariaTable(data){
     grandVGV += vgv;
     var canal = items[0] ? items[0].canal : '';
     var canalBadge = canal==='IMOB' ? '<span class="badge-sm badge-imob">IMOB</span>' :
-                     canal==='PEC'  ? '<span class="badge-sm badge-pec">PEC</span>' : '';
+                     canal==='PEC'  ? '<span class="badge-sm badge-pec">PEC</span>' :
+                     imob==='(Não mapeado)' ? '<span class="badge-sm badge-unmapped">SEM MAPEAMENTO</span>' : '';
     var vendedores = [];
     items.forEach(function(d){ if(d.owner_name && d.owner_name!=='PEC' && vendedores.indexOf(d.owner_name)===-1) vendedores.push(d.owner_name); });
     var vendedorCell = vendedores.length ? vendedores.join(', ') : '—';
