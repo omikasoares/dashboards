@@ -124,7 +124,7 @@ body{ min-height:100vh }
 
 .stats-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns:repeat(3,1fr);
   gap:14px; margin-top:28px;
 }
 .stat{
@@ -153,7 +153,6 @@ body{ min-height:100vh }
   font-size:1.2rem; line-height:1.25; word-break:break-word; white-space:normal;
 }
 .stat-sub{ font-size:.7rem; color:var(--light); margin-top:2px; font-weight:400 }
-.stat-full{ grid-column:1 / -1 }
 
 /* ─── FILTERS ─── */
 .filter-row{
@@ -622,7 +621,7 @@ function renderStats(ev){
         <div class="stat-sub">${next?next.date:'—'}</div>
       </div>
     </div>
-    <div class="stat stat-full">
+    <div class="stat">
       <div class="stat-icon" style="background:${lucroTotal>=0?'#ECFDF5':'#FEF2F2'};font-size:1.2rem">${lucroTotal>=0?'💰':'📉'}</div>
       <div>
         <div class="stat-label">Lucro Líquido (realizados)</div>
