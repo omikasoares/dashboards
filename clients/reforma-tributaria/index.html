@@ -146,7 +146,14 @@ body{ min-height:100vh }
 .stat-value{
   font-size:1.7rem; font-weight:800; line-height:1.1; margin-top:2px;
 }
+.stat-value-city{
+  font-size:1.25rem; line-height:1.25; word-break:break-word;
+}
+.stat-value-currency{
+  font-size:1.2rem; line-height:1.25; word-break:break-word; white-space:normal;
+}
 .stat-sub{ font-size:.7rem; color:var(--light); margin-top:2px; font-weight:400 }
+.stat-full{ grid-column:1 / -1 }
 
 /* ─── FILTERS ─── */
 .filter-row{
@@ -328,7 +335,6 @@ body{ min-height:100vh }
   .stats-grid{ grid-template-columns:1fr 1fr }
   .stat{ padding:14px 16px }
   .stat-value{ font-size:1.3rem }
-  .stat-full{ grid-column:1 / -1 }
 }
 </style>
 </head>
@@ -370,7 +376,7 @@ body{ min-height:100vh }
     <div class="stat"><div class="stat-icon" style="background:#E6F4F1">📅</div><div><div class="stat-label">Total de eventos</div><div class="stat-value">—</div><div class="stat-sub">carregando...</div></div></div>
     <div class="stat"><div class="stat-icon" style="background:#E6F4F1">👥</div><div><div class="stat-label">Matriculados</div><div class="stat-value">—</div><div class="stat-sub">carregando...</div></div></div>
     <div class="stat"><div class="stat-icon" style="background:#FAFBE6">📊</div><div><div class="stat-label">Ocupação geral</div><div class="stat-value">—</div><div class="stat-sub">carregando...</div></div></div>
-    <div class="stat"><div class="stat-icon" style="background:#E6F4F1">📍</div><div><div class="stat-label">Próximo evento</div><div class="stat-value">—</div><div class="stat-sub">—</div></div></div>
+    <div class="stat"><div class="stat-icon" style="background:#E6F4F1">📍</div><div><div class="stat-label">Próximo evento</div><div class="stat-value stat-value-city">—</div><div class="stat-sub">—</div></div></div>
   </div>
 
   <!-- Filtros -->
@@ -612,7 +618,7 @@ function renderStats(ev){
       <div class="stat-icon" style="background:#E6F4F1;font-size:1.2rem">📍</div>
       <div>
         <div class="stat-label">Próximo evento</div>
-        <div class="stat-value" style="color:#00272C">${next?next.city:'—'}</div>
+        <div class="stat-value stat-value-city" style="color:#00272C">${next?next.city:'—'}</div>
         <div class="stat-sub">${next?next.date:'—'}</div>
       </div>
     </div>
@@ -620,7 +626,7 @@ function renderStats(ev){
       <div class="stat-icon" style="background:${lucroTotal>=0?'#ECFDF5':'#FEF2F2'};font-size:1.2rem">${lucroTotal>=0?'💰':'📉'}</div>
       <div>
         <div class="stat-label">Lucro Líquido (realizados)</div>
-        <div class="stat-value" style="color:${lucroTotal>=0?'#059669':'#DC2626'};font-size:1.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${fmtBR.format(lucroTotal)}</div>
+        <div class="stat-value stat-value-currency" style="color:${lucroTotal>=0?'#059669':'#DC2626'}">${fmtBR.format(lucroTotal)}</div>
         <div class="stat-sub">${pastEvents.length} evento${pastEvents.length===1?'':'s'} já realizado${pastEvents.length===1?'':'s'}</div>
       </div>
     </div>`;
