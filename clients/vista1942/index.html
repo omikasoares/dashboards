@@ -567,7 +567,7 @@ function renderDealsStats(){
   if(f.empreendimento !== 'all'){
     // Com empreendimento selecionado: destaca quem mais vendeu daquele empreendimento
     var vendedores = groupBy(data, function(d){ return d.owner_name || 'Sem vendedor'; });
-    var topVend = '—'; var topVendVgv = 0;
+    var topVend = 'Sem dados'; var topVendVgv = 0;
     Object.keys(vendedores).forEach(function(v){
       var val = sumField(vendedores[v],'total_price');
       if(val > topVendVgv){ topVendVgv = val; topVend = v; }
@@ -648,7 +648,7 @@ function renderDealsContent(){
     return;
   }
 
-  var empSuffix = f.empreendimento !== 'all' ? ' — '+f.empreendimento : '';
+  var empSuffix = f.empreendimento !== 'all' ? ' · '+f.empreendimento : '';
   var html = '<div class="wrap">';
 
   // Gráficos: Empreendimento + IMOB vs PEC
