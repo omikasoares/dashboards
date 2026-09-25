@@ -565,16 +565,16 @@ function renderDealsStats(){
 
   var highlightLabel, highlightValue, highlightSub;
   if(f.empreendimento !== 'all'){
-    // Com empreendimento selecionado: destaca quem mais vendeu daquele empreendimento
-    var vendedores = groupBy(data, function(d){ return d.owner_name || 'Sem vendedor'; });
-    var topVend = 'Sem dados'; var topVendVgv = 0;
-    Object.keys(vendedores).forEach(function(v){
-      var val = sumField(vendedores[v],'total_price');
-      if(val > topVendVgv){ topVendVgv = val; topVend = v; }
+    // Com empreendimento selecionado: destaca quem mais vendeu daquele empreendimento (imobiliária ou PEC)
+    var porImob = groupBy(data, function(d){ return d.imobiliaria_name || imobFallbackLabel(d); });
+    var topImob = 'Sem dados'; var topImobVgv = 0; var topImobQtd = 0;
+    Object.keys(porImob).forEach(function(k){
+      var val = sumField(porImob[k],'total_price');
+      if(val > topImobVgv){ topImobVgv = val; topImob = k; topImobQtd = porImob[k].length; }
     });
-    highlightLabel = 'Vendedor Destaque';
-    highlightValue = topVend;
-    highlightSub = fmtBRL(topVendVgv);
+    highlightLabel = 'Quem mais vendeu';
+    highlightValue = topImob;
+    highlightSub = topImobQtd+' vendas · '+fmtBRL(topImobVgv);
   } else {
     // Sem filtro: destaca o empreendimento com mais VGV
     var emps = groupBy(data, 'empreendimento_name');
@@ -665,13 +665,8 @@ function renderDealsContent(){
   html += renderEmpreendimentoTable(data);
   html += '</div>';
 
-  // Ranking Vendedores
-  html += '<div class="section"><div class="section-head"><span class="section-title">Ranking de Vendedores'+empSuffix+'</span></div>';
-  html += renderVendedorTable(data);
-  html += '</div>';
-
   // Ranking Imobiliárias
-  html += '<div class="section"><div class="section-head"><span class="section-title">Ranking de Imobiliárias</span></div>';
+  html += '<div class="section"><div class="section-head"><span class="section-title">Ranking de Imobiliárias'+empSuffix+'</span></div>';
   html += renderImobiliariaTable(data);
   html += '</div>';
 
@@ -753,29 +748,6 @@ function renderEmpreendimentoTable(data){
 
   return '<div class="tbl-wrap"><table class="dtbl">' +
     '<thead><tr><th>#</th><th>Empreendimento</th><th class="num">Vendas</th><th class="num">VGV</th></tr></thead>' +
-    '<tbody>'+rows+'</tbody>' +
-    '<tfoot><tr><td></td><td>Total Geral</td><td class="num">'+grandTotal+'</td><td class="num">'+fmtBRL(grandVGV)+'</td></tr></tfoot>' +
-    '</table></div>';
-}
-
-function renderVendedorTable(data){
-  var vends = groupBy(data, function(d){ return d.owner_name || 'Sem vendedor'; });
-  var sorted = Object.keys(vends).sort(function(a,b){ return sumField(vends[b],'total_price') - sumField(vends[a],'total_price'); });
-  var rows = '', grandTotal=0, grandVGV=0;
-
-  sorted.forEach(function(vend, idx){
-    var items = vends[vend];
-    var vgv = sumField(items,'total_price');
-    grandTotal += items.length;
-    grandVGV += vgv;
-    rows += '<tr><td style="color:var(--light);font-size:.7rem">'+(idx+1)+'</td>' +
-      '<td><strong>'+vend+'</strong></td>' +
-      '<td class="num">'+items.length+'</td>' +
-      '<td class="num highlight">'+fmtBRL(vgv)+'</td></tr>';
-  });
-
-  return '<div class="tbl-wrap"><table class="dtbl">' +
-    '<thead><tr><th>#</th><th>Vendedor</th><th class="num">Vendas</th><th class="num">VGV</th></tr></thead>' +
     '<tbody>'+rows+'</tbody>' +
     '<tfoot><tr><td></td><td>Total Geral</td><td class="num">'+grandTotal+'</td><td class="num">'+fmtBRL(grandVGV)+'</td></tr></tfoot>' +
     '</table></div>';
