@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Anclivepa &ndash; Leads Qualificados</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --teal:    #00272C;
+  --lime:    #E9FF4A;
+  --lime2:   #D2E132;
+  --white:   #FFFFFF;
+  --black:   #1A1A1A;
+  --bg:      #F2F4F3;
+  --card:    #FFFFFF;
+  --border:  #E2E8E5;
+  --muted:   #607070;
+  --light:   #A0B0B0;
+
+  --green:   #059669;
+  --yellow:  #D97706;
+  --orange:  #EA580C;
+  --red:     #DC2626;
+  --blue:    #2563EB;
+
+  --shadow:    0 1px 3px rgba(0,39,44,.07), 0 4px 12px rgba(0,39,44,.05);
+  --shadow-lg: 0 8px 28px rgba(0,39,44,.13);
+}
+
+html{ font-family:'Poppins',sans-serif; background:var(--bg); color:var(--black) }
+body{ min-height:100vh }
+
+.header{ background: var(--teal); position: relative; overflow: hidden; padding: 0 40px; }
+.header::before{ content:''; position:absolute; right:-80px; top:-80px; width:340px; height:340px; border-radius:50%; border: 40px solid rgba(233,255,74,.07); pointer-events:none; }
+.header::after{ content:''; position:absolute; right:60px; top:-140px; width:260px; height:260px; border-radius:50%; border: 28px solid rgba(233,255,74,.05); pointer-events:none; }
+.arc-inner{ position:absolute; right:180px; bottom:-90px; width:200px; height:200px; border-radius:50%; border: 20px solid rgba(233,255,74,.06); pointer-events:none; }
+
+.header-inner{ max-width:1280px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:22px 0; gap:20px; flex-wrap:wrap; position:relative; z-index:1; }
+.logo-mark{ font-weight:800; font-size:1.4rem; color:var(--white); letter-spacing:.02em; }
+.logo-mark span{ color:var(--lime) }
+.tagline{ font-size:.72rem; font-weight:300; color:rgba(255,255,255,.5); letter-spacing:.1em; text-transform:uppercase; margin-top:3px; }
+.header-divider{ width:1px; height:38px; background:rgba(255,255,255,.15); flex-shrink:0; }
+.header-title{ font-size:1rem; font-weight:700; color:var(--white); letter-spacing:.06em; text-transform:uppercase; }
+.header-subtitle{ font-size:.72rem; font-weight:300; color:rgba(255,255,255,.5); margin-top:3px; letter-spacing:.03em; }
+.update-badge{ display:inline-flex; align-items:center; gap:7px; background:rgba(233,255,74,.08); border:1px solid rgba(233,255,74,.2); border-radius:100px; padding:5px 14px; margin-top:8px; font-size:.68rem; font-weight:500; color:rgba(255,255,255,.55); }
+.dot{ width:6px; height:6px; border-radius:50%; background:var(--lime); flex-shrink:0; }
+
+.wrap{ max-width:1280px; margin:0 auto; padding:0 28px 60px }
+
+.stats-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:28px; }
+.stat{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 22px; box-shadow:var(--shadow); display:flex; align-items:center; gap:16px; }
+.stat-icon{ width:46px; height:46px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1.3rem; }
+.stat-label{ font-size:.65rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+.stat-value{ font-size:1.7rem; font-weight:800; line-height:1.1; margin-top:2px }
+.stat-sub{ font-size:.7rem; color:var(--light); margin-top:2px; font-weight:400 }
+
+.section{ margin-top:32px }
+.section-head{ display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; justify-content:space-between }
+.section-title{ font-size:.65rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
+.section-note{ font-size:.72rem; color:var(--light); font-weight:400 }
+
+.panel{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow); }
+
+.bar-row{ display:flex; align-items:center; gap:10px; margin-top:12px }
+.bar-row:first-child{ margin-top:0 }
+.bar-label{ width:220px; flex-shrink:0; font-size:.74rem; font-weight:600; color:var(--black) }
+.bar-track{ flex:1; background:#EEF2F1; border-radius:100px; height:10px; overflow:hidden }
+.bar-fill{ height:100%; border-radius:100px }
+.bar-num{ width:40px; flex-shrink:0; text-align:right; font-size:.78rem; font-weight:700 }
+
+.note-box{ background:#FEF2F2; border:1px solid #FECACA; border-radius:12px; padding:14px 18px; margin-top:16px; font-size:.78rem; color:#991B1B; line-height:1.5; }
+
+.toolbar{ display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; align-items:center }
+.search-input{ flex:1; min-width:200px; padding:10px 14px; border-radius:10px; border:1px solid var(--border); font-family:'Poppins',sans-serif; font-size:.82rem; background:var(--white); }
+.filter-pills{ display:flex; gap:6px; flex-wrap:wrap }
+.pill{ padding:6px 14px; border-radius:100px; font-size:.7rem; font-weight:700; border:1px solid var(--border); background:var(--white); cursor:pointer; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; }
+.pill.active{ background:var(--teal); color:var(--white); border-color:var(--teal) }
+
+.table-wrap{ overflow-x:auto; border-radius:16px; border:1px solid var(--border); background:var(--card); box-shadow:var(--shadow) }
+table{ width:100%; border-collapse:collapse; font-size:.78rem; min-width:900px }
+thead th{ text-align:left; padding:12px 14px; background:#FAFBFA; border-bottom:1px solid var(--border); font-size:.64rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; cursor:pointer; white-space:nowrap }
+thead th:hover{ color:var(--black) }
+tbody td{ padding:11px 14px; border-bottom:1px solid var(--border); vertical-align:top }
+tbody tr:hover{ background:#FAFBFA }
+tbody tr:last-child td{ border-bottom:none }
+.badge{ display:inline-block; padding:3px 10px; border-radius:100px; font-size:.64rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; white-space:nowrap }
+.badge-ganhou{ background:#ECFDF5; color:var(--green) }
+.badge-perdeu{ background:#FEF2F2; color:var(--red) }
+.badge-andamento{ background:#EFF6FF; color:var(--blue) }
+.muted-cell{ color:var(--light); font-size:.72rem }
+.sys-error{ color:var(--red); font-weight:700 }
+
+.footer{ text-align:center; padding:32px 24px; font-size:.67rem; color:var(--light); font-weight:400; }
+
+@media(max-width:620px){
+  .header{ padding:0 18px } .wrap{ padding:0 14px 40px } .header-divider{ display:none }
+  .stats-grid{ grid-template-columns:1fr 1fr } .stat{ padding:14px 16px } .stat-value{ font-size:1.3rem }
+  .bar-label{ width:130px; font-size:.66rem }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="arc-inner"></div>
+  <div class="header-inner">
+    <div>
+      <div class="logo-mark">anclive<span>pa</span></div>
+      <div class="tagline">Leads Qualificados</div>
+    </div>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Leads Qualificados &middot; Semana 05&ndash;11/10</div>
+      <div class="header-subtitle">Formulario ECOM &middot; formado = sim &middot; disposto a investir = sim &middot; mora em SP ou disponibilidade de viajar</div>
+      <div class="update-badge">
+        <span class="dot"></span>
+        <span>Dados estaticos &middot; gerados em 15/10/2026 &middot; cruzado com RD CRM Anclivepa</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-icon" style="background:#E6F4F1">&#128101;</div>
+      <div><div class="stat-label">Total de leads</div><div class="stat-value" id="s-total" style="color:var(--teal)">-</div><div class="stat-sub">na lista ajustada</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#ECFDF5">&#9989;</div>
+      <div><div class="stat-label">Ganhou</div><div class="stat-value" id="s-ganhou" style="color:var(--green)">-</div><div class="stat-sub" id="s-ganhou-pct">-</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#EFF6FF">&#128311;</div>
+      <div><div class="stat-label">Em andamento</div><div class="stat-value" id="s-andamento" style="color:var(--blue)">-</div><div class="stat-sub" id="s-andamento-pct">-</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#FEF2F2">&#10060;</div>
+      <div><div class="stat-label">Perdeu</div><div class="stat-value" id="s-perdeu" style="color:var(--red)">-</div><div class="stat-sub" id="s-perdeu-pct">-</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Em que etapa esta, no funil</span>
+      <span class="section-note">Comercial Anclivepa, Requalificacao ou Perdidos</span>
+    </div>
+    <div class="panel" id="etapas-panel"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Motivo de perda</span>
+      <span class="section-note">so entre os que perderam</span>
+    </div>
+    <div class="panel" id="motivos-panel"></div>
+    <div class="note-box" id="sys-error-note" style="display:none"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Lista completa</span>
+      <span class="section-note" id="table-count">-</span>
+    </div>
+    <div class="toolbar">
+      <input class="search-input" id="search" type="text" placeholder="Buscar por nome, e-mail ou curso...">
+      <div class="filter-pills" id="status-pills">
+        <button class="pill active" data-status="TODOS">Todos</button>
+        <button class="pill" data-status="GANHOU">Ganhou</button>
+        <button class="pill" data-status="EM ANDAMENTO">Em andamento</button>
+        <button class="pill" data-status="PERDEU">Perdeu</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-key="nome">Nome</th>
+            <th data-key="curso">Curso de Interesse</th>
+            <th data-key="status">Status</th>
+            <th data-key="etapa">Etapa / Funil</th>
+            <th data-key="motivo">Motivo de Perda</th>
+            <th data-key="email">E-mail</th>
+            <th data-key="telefone">Telefone</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">Feito com by Autz &middot; dados cruzados RD Marketing + RD CRM Anclivepa</div>
+
+<script>
+const LEADS = [{"nome": "Arthur Macário Lopes", "email": "arthurmacario5@gmail.com", "telefone": "+5587996162299", "curso": "Especialização em Tomografia 2027.1", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Débora Maia", "email": "ma06q614iadebora1983@gmail.com", "telefone": "+5519996962258", "curso": "Especialização em Tomografia 2027.1", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Luana Moreira", "email": "luanamoreira@rede.ulbra.br", "telefone": "+5563984613511", "curso": "Especialização em Enfermidades Infecciosas2027.1", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Katia Pereira", "email": "buttercup36@gmail.com", "telefone": "+556199868406", "curso": "Especialização em Acupuntura Veterinária Integrativa 2027.1 WPP", "status": "GANHOU", "funil": "Comercial Anclivepa", "etapa": "Concluido", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Eliza", "email": "andradebete21@gmail.com", "telefone": "+5511984602204", "curso": "Especialização em Acupuntura Veterinária Integrativa 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Monique gomes de araujo", "email": "monis230579@gmail.com", "telefone": "+5521995492305", "curso": "MBA em Gestão e Empreendedorismo no Mercado Pet 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Antonio Galli", "email": "netogalli12@gmail.com", "telefone": "+5541995987609", "curso": "MBA em Gestão e Empreendedorismo no Mercado Pet 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Cristiellen Galvão | Veterinária a domicílio em Manaus e região", "email": "cristiellengalvao13@gmail.com", "telefone": "+5592993007291", "curso": "MBA em Gestão e Empreendedorismo no Mercado Pet 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Marina Marquezotti", "email": "marinamarquezottivet@gmail.com", "telefone": "+554899969640", "curso": "MBA em Gestão e Empreendedorismo no Mercado Pet 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Wilton Silva", "email": "wiltonsqntos54@gmail.com", "telefone": "1234567809", "curso": "Especialização em Nefrologia e Urologia de Pequenos Animais 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "Contato inválido", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Bruno17.Rios JINU Abby Mystery Baby saja romance Saja", "email": "brunorios203@gmail.com", "telefone": "+5575987067202", "curso": "Especialização em Oncologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Vivian Zany", "email": "vzany0505@gmail.com", "telefone": "559292908344", "curso": "Especialização em Oncologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Jamel do nascimento costa", "email": "popvetpetshop@gmail.com", "telefone": "+5524974033798", "curso": "Especialização em Anestesiologia Veterinária 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Fernanda Cardoso", "email": "fecardooso97@gmail.com", "telefone": "+5511973904310", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Raidenilson de Sousa Aleixo", "email": "raydenylsonsousa@gmail.com", "telefone": "939199-9068", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "[SISTEMA] Falha ao enviar Template", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Isabela Moscatelli", "email": "moscatelliisabela6@gmail.com", "telefone": "+5515981120200", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Atendimento Comercial", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Alessandra Reis", "email": "dosreis.alessandra@gmail.com", "telefone": "(11) 99003-9995", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Janela de 24h", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Juliana Bastos", "email": "julianabastosmv@gmail.com", "telefone": "+5531994006770", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Fernanda Andrade", "email": "nandinhandrade@yahoo.com.br", "telefone": "+5531993361373", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Livia Frare", "email": "liviafrare99@icloud.com", "telefone": "+5514996748316", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Rodrigo Farias", "email": "rf6713527@gmail.com.br", "telefone": "+5511958226613", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "Lead duplicado", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Letícia Dias", "email": "leticiamoraisvgp@gmail.com", "telefone": "+5511957781274", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "natalia", "email": "nati.wingert@icloud.com", "telefone": "+51998850112", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Rafaela Santana", "email": "rafaelas.ramos@uni9.edu.br", "telefone": "+5511966402153", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Robson Passuello (Dudu)", "email": "rpassuello@hotmail.com", "telefone": "+5511991274544", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Nathália Gomes", "email": "nathaliagomes12amo@gmail.com", "telefone": "+5543996995295", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Laura Montilho Vidal", "email": "laura.montilhov@gmail.com", "telefone": "+5521984848953", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Stefany Maia", "email": "stefanycrl@hotmail.com", "telefone": "+5569993060795", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Atendimento Comercial", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Henry Moura", "email": "henryamenezes@gmail.com", "telefone": "+5586981612001", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Em Negociação", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Sheila Obeid", "email": "sheilao.enf@gmail.com", "telefone": "+5511993181045", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Antonio Jacinto de Oliveira", "email": "antoniojacinto.medvet@gmail.com", "telefone": "+5583933009759", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Késia", "email": "kesiacunha2009@gmail.com", "telefone": "+5596981168704", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "Preço", "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Dheyne Jakelyne Ferreira dos Reis", "email": "dhemedvet@gmail.com", "telefone": "+554199189462", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "[SISTEMA] Falha ao enviar Template", "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Priscila Raquel Carvalho", "email": "priscilaraquelvet@gmail.com", "telefone": "+5511963267553", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Carolina Petreca Mas", "email": "lynx.medvet@gmail.com", "telefone": "+5511942150689", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Carol Lemos", "email": "carolehideo@hotmail.com", "telefone": "+5511973204091", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Rafaela Lourenço", "email": "rafaelakauane029@gmail.com", "telefone": "+5544991772513", "curso": "Especialização em Dermatologia e Alergologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Carolina Fernandes Vaz", "email": "carollinafernandesvaz@gmail.com", "telefone": "91981161993", "curso": "Especialização em Ortopedia e Neurocirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Janela de 24h", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Rodrigo Farias", "email": "rf6713527@gmail.com.br", "telefone": "+5511958226613", "curso": "Especialização em Ortopedia e Neurocirurgia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "Lead duplicado", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Respecto", "email": "ro3382205@gmail.com", "telefone": "+551323232313", "curso": "Especialização em Pneumologia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Requalificação", "etapa": "Aguardando Requalificação", "motivo": "Não responde", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Clínica Veterinária Marley & Eu", "email": "amanda-britossp@hotmail.com", "telefone": "997207356", "curso": "Especialização em Oftalmologia Veterinária 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Rafael Steffens", "email": "rafaelsteffens@msn.com", "telefone": "+5545991018479", "curso": "Especialização em Oftalmologia Veterinária 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "É Raissa Vitória Bento da Silv", "email": "raissavitoriabds@gmail.com", "telefone": "3666666666", "curso": "Especialização em Clínica Médica de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "[SISTEMA] Falha ao enviar Template", "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Tania Mara Santos de Araujo", "email": "kv.diagnosticoporimagem@gmail.com", "telefone": "+5513991012152", "curso": "Especialização em Cardiologia Veterinária 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Thais Gameiro Ribeiro", "email": "thagameirovet@yahoo.com.br", "telefone": "19984482551", "curso": "Especialização em Nutrição e Nutrologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Dr.Carlos Eduardo", "email": "carlos07101998@gmail.com", "telefone": "+5592991218717", "curso": "Especialização em Nutrição e Nutrologia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Gleydson Martins Ferreira", "email": "gleydsonvet@yahoo.com.br", "telefone": "+5561992879280", "curso": "Especialização em Diagnóstico por Imagem em Pequenos Animais 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "Publico do Hospital", "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Marce F Guimarães", "email": "maceloguima@gmail.com", "telefone": "+5532984543511", "curso": "Especialização em Diagnóstico por Imagem em Pequenos Animais 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Eshiley Muricy", "email": "eshileymuricy@hotmail.com", "telefone": "+5511977430826", "curso": "Especialização em Diagnóstico por Imagem em Pequenos Animais 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Em Negociação", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Jéssika Luiz", "email": "jessika.pan@gmail.com", "telefone": "+5519991522168", "curso": "Especialização em Endoscopia Veterinária 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Vinicius Henrique", "email": "viniciushalmeida10@hotmail.com", "telefone": "+5591987335231", "curso": "Especialização em Endoscopia Veterinária 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Danielle Mendes | Médica Veterinária", "email": "daniellenogueiramendes@gmail.com", "telefone": "+5592993801024", "curso": "Especialização em Endoscopia Veterinária 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "DESQUALIFICADO", "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "𝕮𝖆𝖗𝖑𝖔𝖘", "email": "jocilaniagomes479@gmail.com", "telefone": "+5588988938809", "curso": "Especialização em Endoscopia Veterinária 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "DESQUALIFICADO", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Kauan Silva Mendes", "email": "silvamendeskauan80@gmail.com", "telefone": "+5599985161735", "curso": "Especialização em Endoscopia Veterinária 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "MÁTHEUS JOSÉ", "email": "matheusjosecampelo2008@gmail.com", "telefone": "+5584999168209", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "DESQUALIFICADO", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Dr. Igor da Cruz Santana", "email": "icavet@hotmail.com", "telefone": "+5582999690265", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Ana Clara", "email": "anaclaranevesdemedeiros@gmail.com", "telefone": "+5575998038066", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "PERDEU", "funil": "Requalificação", "etapa": "Aguardando Requalificação", "motivo": "Não responde", "sp": "sim,_moro_em_são_paulo"}, {"nome": "souzzah", "email": "evellynsborges1@gmail.com", "telefone": "+5575988433548", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Moranguinho_kelly", "email": "mariakellyk73@gmail.com", "telefone": "+5574988492718", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "DESQUALIFICADO", "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Kathryn Jarrold", "email": "jarroldke@hotmail.com", "telefone": "+5511941318998", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Dayana Mello", "email": "dayana_mello2@hotmail.com", "telefone": "9999999999", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "[SISTEMA] ERRO DE DISPARO", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Beatryz Tudela", "email": "tudelabeatryz16@gmail.com", "telefone": "+5514998959210", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Tais Tavares", "email": "franciscotavarestavares10@gmail.com", "telefone": "55978440929", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Janela de 24h", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Edna Maria Alice Ester Maria Cecília", "email": "dejesusjuvenalelionan@gmail.com", "telefone": "+5522992631510", "curso": "Especialização em Gastroenterologia de Pequenos Animais 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Stênio Gomes", "email": "steniovieira@hotmail.com", "telefone": "+5585988752215", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Camila Menos", "email": "camilamatosmendes13@gmail.com", "telefone": "+5511913188575", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Mariana Gabriela Dos Santos", "email": "marianagabriela2012@bol.com.br", "telefone": "+5517991449927", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "PH_cort’s", "email": "pedrojacooliveirapereira@gmail.com", "telefone": "77999149524", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Alini Ramos da Costa", "email": "alini_ramos@yahoo.com.br", "telefone": "+5511981605043", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "João Lucas", "email": "joaolucasmatyas@gmail.com", "telefone": "51343341616", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "Contato inválido", "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Zenilda Ávila Figini", "email": "zfbonin@gmail.com", "telefone": "+5551999690587", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "[SISTEMA] Falha ao enviar Template", "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "lauravitoriamisael", "email": "josemisaeld7@gmail.com", "telefone": "+5582996591894", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Requalificação", "etapa": "Aguardando Requalificação", "motivo": "Não responde", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Dhenife Silva Rodrigues", "email": "marks157bolado@gmail.com", "telefone": "+5573982262079", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Layza Alessandra Gambarim DA Silva", "email": "layzaalessandragambarimsilva@gmail.com", "telefone": "+554396798674", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "🅢🅤🅛🅘🅐🅝🅔 🅒🅐🅡🅐🅒̧🅐", "email": "scaracapimentel@gmail.com", "telefone": "+5511960940967", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "DESQUALIFICADO", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Lucas almeida", "email": "lucasalmeida2706111@gmail.com", "telefone": "+5585991965603", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "morena", "email": "maycon1225.88@gmail.com", "telefone": "+5588988302191", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Comercial Anclivepa", "etapa": "Janela de 24h", "motivo": "DESQUALIFICADO", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Cláudia Cortez Dias", "email": "claudiacortezdias0@gmail.com", "telefone": "+5511993454155", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Débora Maia", "email": "ma06q614iadebora1983@gmail.com", "telefone": "+5519996962258", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Elson.oro234", "email": "elsonorm499@gmail.com", "telefone": "+5569981088994", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Pedro Ivo Valença Pereira", "email": "pedroipereira97@gmail.com", "telefone": "+5521995261884", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Elielma Lopes", "email": "elielmalopes36@gmail.com", "telefone": "+5582991120465", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "ℕ𝕒𝕥𝕒𝕝𝕚𝕒", "email": "nathaliafigueredo32@gmail.com", "telefone": "+5591993059816", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "DESQUALIFICADO", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Glauciane Silva", "email": "glaucianealvesdasilva1@gmail.com", "telefone": "+5579998373486", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "cleudimar peneina", "email": "cledimarpereiraazevedo19@gmail.com", "telefone": "+5562998376781", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Marcia Santos", "email": "antonioh17jc@gmail.com", "telefone": "+5511981103323", "curso": "Especialização em Cirurgia de Cães e Gatos 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Lara Vilela", "email": "laralindaaugusto@yahoo.com.br", "telefone": "+5535988576535", "curso": "Especialização em Patologia Clínica 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Em Negociação", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Luis Portella", "email": "luisportellaret@gmail.com", "telefone": "+556598015233", "curso": "Especialização em Animais Selvagens 2027.1WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Gabs  Ifápamílérìn", "email": "guerreiro.gabriella@gmail.com", "telefone": "+5511987885223", "curso": "Especialização em Animais Selvagens 2027.1WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Isabela Romani", "email": "isabela_romani@hotmail.com", "telefone": "+5516997201449", "curso": "Especialização em Geriatria 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Atendimento Comercial", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Júnia Maris | Nutrologia Veterinária", "email": "juniamaris.medvet@gmail.com", "telefone": "+5531973134178", "curso": "Especialização em Geriatria 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Daniela Cichielo", "email": "danielasc_2006@hotmail.com", "telefone": "+5511983405627", "curso": "Especialização em Geriatria 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "Cronograma incompatível", "sp": "sim,_moro_em_são_paulo"}, {"nome": "Fernanda Teixeira", "email": "febenhur2008@gmail.com.br", "telefone": "+5535992603296", "curso": "Especialização em Geriatria 2027.1 WPP", "status": "PERDEU", "funil": "Perdidos", "etapa": "Desqualificados", "motivo": "Falta de disponibilidade financeira", "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Pollyana Pires", "email": "pollyana_pires@yahoo.com.br", "telefone": "+5511962535533", "curso": "Especialização em Geriatria 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Em Negociação", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Larissa Saraiva", "email": "la.saraiva.06@hotmail.com", "telefone": "+5511978881696", "curso": "Especialização em Geriatria 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}, {"nome": "Veterinária Integrativa - Viviane Abreu - Salvador/Ba", "email": "viviuerba@gmail.com", "telefone": "+5571992703134", "curso": "Especialização em Geriatria 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "Janela de 24h", "motivo": null, "sp": "tenho_disponibilidade_pra_viajar"}, {"nome": "Mayara Silva", "email": "mayarasleite@gmail.com", "telefone": "+5511974815188", "curso": "Institucional Pós 2027.1 WPP", "status": "EM ANDAMENTO", "funil": "Comercial Anclivepa", "etapa": "FUP Automatizado", "motivo": null, "sp": "sim,_moro_em_são_paulo"}];
+
+const SYS_ERROR_REASONS = ['[SISTEMA] Falha ao enviar Template', '[SISTEMA] ERRO DE DISPARO'];
+
+function pct(part, total) { return total ? (part / total * 100).toFixed(1).replace('.', ',') : '0,0'; }
+
+function statusBadge(s) {
+  if (s === 'GANHOU') return '<span class="badge badge-ganhou">Ganhou</span>';
+  if (s === 'PERDEU') return '<span class="badge badge-perdeu">Perdeu</span>';
+  return '<span class="badge badge-andamento">Em andamento</span>';
+}
+
+function renderStats() {
+  const total = LEADS.length;
+  const ganhou = LEADS.filter(l => l.status === 'GANHOU').length;
+  const perdeu = LEADS.filter(l => l.status === 'PERDEU').length;
+  const andamento = LEADS.filter(l => l.status === 'EM ANDAMENTO').length;
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-ganhou').textContent = ganhou;
+  document.getElementById('s-ganhou-pct').textContent = pct(ganhou, total) + '% do total';
+  document.getElementById('s-andamento').textContent = andamento;
+  document.getElementById('s-andamento-pct').textContent = pct(andamento, total) + '% do total';
+  document.getElementById('s-perdeu').textContent = perdeu;
+  document.getElementById('s-perdeu-pct').textContent = pct(perdeu, total) + '% do total';
+}
+
+function renderBarPanel(containerId, counts, totalForPct, colorFn, tagFn) {
+  const el = document.getElementById(containerId);
+  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  el.innerHTML = entries.map(([label, count]) => {
+    const share = pct(count, totalForPct);
+    const color = colorFn ? colorFn(label) : 'var(--teal)';
+    const tag = tagFn ? tagFn(label) : '';
+    return '<div class="bar-row">' +
+      '<span class="bar-label">' + label + (tag ? ' ' + tag : '') + '</span>' +
+      '<div class="bar-track"><div class="bar-fill" style="width:' + share + '%;background:' + color + '"></div></div>' +
+      '<span class="bar-num">' + count + '</span>' +
+      '</div>';
+  }).join('');
+}
+
+function renderEtapas() {
+  const counts = {};
+  LEADS.forEach(l => { const k = l.etapa + ' (' + l.funil + ')'; counts[k] = (counts[k] || 0) + 1; });
+  renderBarPanel('etapas-panel', counts, LEADS.length, (label) => {
+    if (label.indexOf('Desqualificados') === 0) return 'var(--red)';
+    if (label.indexOf('Concluido') === 0) return 'var(--green)';
+    if (label.indexOf('Requalifica') >= 0) return 'var(--yellow)';
+    return 'var(--blue)';
+  });
+}
+
+function renderMotivos() {
+  const perdidos = LEADS.filter(l => l.status === 'PERDEU');
+  const counts = {};
+  perdidos.forEach(l => { const k = l.motivo || '(sem motivo)'; counts[k] = (counts[k] || 0) + 1; });
+  renderBarPanel('motivos-panel', counts, perdidos.length, (label) => SYS_ERROR_REASONS.indexOf(label) >= 0 ? 'var(--red)' : 'var(--orange)',
+    (label) => SYS_ERROR_REASONS.indexOf(label) >= 0 ? '<span class="sys-error">(erro de sistema)</span>' : '');
+
+  const sysErrorCount = perdidos.filter(l => SYS_ERROR_REASONS.indexOf(l.motivo) >= 0).length;
+  const noteEl = document.getElementById('sys-error-note');
+  if (sysErrorCount > 0) {
+    noteEl.style.display = 'block';
+    noteEl.innerHTML = '<strong>' + sysErrorCount + ' perda(s) por erro de sistema</strong> (falha ao enviar template / erro de disparo) - nao foi o lead que desistiu, foi uma falha nossa de automacao. Vale reabrir essas negociacoes.';
+  }
+}
+
+let currentFilter = 'TODOS';
+let currentSort = { key: null, dir: 1 };
+
+function applyFilters() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  let rows = LEADS.filter(l => currentFilter === 'TODOS' || l.status === currentFilter);
+  if (q) {
+    rows = rows.filter(l => (l.nome || '').toLowerCase().indexOf(q) >= 0 || (l.email || '').toLowerCase().indexOf(q) >= 0 || (l.curso || '').toLowerCase().indexOf(q) >= 0);
+  }
+  if (currentSort.key) {
+    rows = rows.slice().sort((a, b) => {
+      const av = (a[currentSort.key] || '').toString().toLowerCase();
+      const bv = (b[currentSort.key] || '').toString().toLowerCase();
+      return av < bv ? -currentSort.dir : av > bv ? currentSort.dir : 0;
+    });
+  }
+  renderTable(rows);
+  document.getElementById('table-count').textContent = rows.length + ' de ' + LEADS.length + ' leads';
+}
+
+function renderTable(rows) {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = rows.map(l => {
+    const motivoCell = l.motivo ? (SYS_ERROR_REASONS.indexOf(l.motivo) >= 0 ? '<span class="sys-error">' + l.motivo + '</span>' : l.motivo) : '<span class="muted-cell">-</span>';
+    return '<tr>' +
+      '<td>' + l.nome + '</td>' +
+      '<td class="muted-cell">' + l.curso + '</td>' +
+      '<td>' + statusBadge(l.status) + '</td>' +
+      '<td class="muted-cell">' + l.etapa + '<br>' + l.funil + '</td>' +
+      '<td>' + motivoCell + '</td>' +
+      '<td class="muted-cell">' + l.email + '</td>' +
+      '<td class="muted-cell">' + l.telefone + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+document.getElementById('search').addEventListener('input', applyFilters);
+document.querySelectorAll('.pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.getAttribute('data-status');
+    applyFilters();
+  });
+});
+document.querySelectorAll('thead th').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.getAttribute('data-key');
+    currentSort.dir = (currentSort.key === key) ? -currentSort.dir : 1;
+    currentSort.key = key;
+    applyFilters();
+  });
+});
+
+renderStats();
+renderEtapas();
+renderMotivos();
+applyFilters();
+</script>
+
+</body>
+</html>

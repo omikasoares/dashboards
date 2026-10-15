@@ -15,6 +15,7 @@ const CLIENTS = [
   { slug: 'reforma-tributaria', path: '/reforma-tributaria', envPrefix: 'REFORMATRIBUTARIA' },
   { slug: 'financeiro', path: '/financeiro', envPrefix: 'FINANCEIRO' },
   { slug: 'revskin', path: '/revskin', envPrefix: 'REVSKIN' },
+  { slug: 'anclivepa-leads-qualificados', path: '/anclivepa-leads-qualificados', envPrefix: 'ANCLIVEPALEADS' },
 ];
 
 const app = express();
