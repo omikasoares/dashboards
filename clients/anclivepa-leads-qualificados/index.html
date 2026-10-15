@@ -173,11 +173,11 @@ tbody tr:last-child td{ border-bottom:none }
     <div class="toolbar">
       <input class="search-input" id="search" type="text" placeholder="Buscar por nome, e-mail ou curso...">
       <div class="filter-pills" id="status-pills">
-        <button class="pill active" data-status="TODOS">Todos</button>
+        <button class="pill" data-status="TODOS">Todos</button>
         <button class="pill" data-status="GANHOU">Ganhou</button>
         <button class="pill" data-status="EM ANDAMENTO">Em andamento</button>
         <button class="pill" data-status="PERDEU">Perdeu</button>
-        <button class="pill" data-status="MAIS_QUALIFICADOS">Mais Qualificados</button>
+        <button class="pill active" data-status="MAIS_QUALIFICADOS">Mais Qualificados</button>
       </div>
     </div>
     <div class="table-wrap">
@@ -274,7 +274,7 @@ function renderMotivos() {
   }
 }
 
-let currentFilter = 'TODOS';
+let currentFilter = 'MAIS_QUALIFICADOS';
 let currentSort = { key: null, dir: 1 };
 
 function applyFilters() {
