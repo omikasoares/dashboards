@@ -1,2 +1,529 @@
-&lt;!DOCTYPE html&gt;
-PLACEHOLDER_CHECK
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Anclivepa &ndash; Leads Qualificados</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --teal:    #00272C;
+  --lime:    #E9FF4A;
+  --lime2:   #D2E132;
+  --white:   #FFFFFF;
+  --black:   #1A1A1A;
+  --bg:      #F2F4F3;
+  --card:    #FFFFFF;
+  --border:  #E2E8E5;
+  --muted:   #607070;
+  --light:   #A0B0B0;
+
+  --green:   #059669;
+  --yellow:  #D97706;
+  --orange:  #EA580C;
+  --red:     #DC2626;
+  --blue:    #2563EB;
+
+  --shadow:    0 1px 3px rgba(0,39,44,.07), 0 4px 12px rgba(0,39,44,.05);
+  --shadow-lg: 0 8px 28px rgba(0,39,44,.13);
+}
+
+html{ font-family:'Poppins',sans-serif; background:var(--bg); color:var(--black) }
+body{ min-height:100vh }
+
+.header{ background: var(--teal); position: relative; overflow: hidden; padding: 0 40px; }
+.header::before{ content:''; position:absolute; right:-80px; top:-80px; width:340px; height:340px; border-radius:50%; border: 40px solid rgba(233,255,74,.07); pointer-events:none; }
+.header::after{ content:''; position:absolute; right:60px; top:-140px; width:260px; height:260px; border-radius:50%; border: 28px solid rgba(233,255,74,.05); pointer-events:none; }
+.arc-inner{ position:absolute; right:180px; bottom:-90px; width:200px; height:200px; border-radius:50%; border: 20px solid rgba(233,255,74,.06); pointer-events:none; }
+
+.header-inner{ max-width:1280px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:22px 0; gap:20px; flex-wrap:wrap; position:relative; z-index:1; }
+.logo-mark{ font-weight:800; font-size:1.4rem; color:var(--white); letter-spacing:.02em; }
+.logo-mark span{ color:var(--lime) }
+.tagline{ font-size:.72rem; font-weight:300; color:rgba(255,255,255,.5); letter-spacing:.1em; text-transform:uppercase; margin-top:3px; }
+.header-divider{ width:1px; height:38px; background:rgba(255,255,255,.15); flex-shrink:0; }
+.header-title{ font-size:1rem; font-weight:700; color:var(--white); letter-spacing:.06em; text-transform:uppercase; }
+.header-subtitle{ font-size:.72rem; font-weight:300; color:rgba(255,255,255,.5); margin-top:3px; letter-spacing:.03em; }
+.update-badge{ display:inline-flex; align-items:center; gap:7px; background:rgba(233,255,74,.08); border:1px solid rgba(233,255,74,.2); border-radius:100px; padding:5px 14px; margin-top:8px; font-size:.68rem; font-weight:500; color:rgba(255,255,255,.55); }
+.dot{ width:6px; height:6px; border-radius:50%; background:var(--lime); flex-shrink:0; }
+
+.wrap{ max-width:1280px; margin:0 auto; padding:0 28px 60px }
+
+.stats-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:28px; }
+.stat{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 22px; box-shadow:var(--shadow); display:flex; align-items:center; gap:16px; }
+.stat-icon{ width:46px; height:46px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1.3rem; }
+.stat-label{ font-size:.65rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+.stat-value{ font-size:1.7rem; font-weight:800; line-height:1.1; margin-top:2px }
+.stat-sub{ font-size:.7rem; color:var(--light); margin-top:2px; font-weight:400 }
+
+.section{ margin-top:32px }
+.section-head{ display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; justify-content:space-between }
+.section-title{ font-size:.65rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
+.section-note{ font-size:.72rem; color:var(--light); font-weight:400 }
+
+.panel{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow); }
+
+.bar-row{ display:flex; align-items:center; gap:10px; margin-top:12px }
+.bar-row:first-child{ margin-top:0 }
+.bar-label{ width:220px; flex-shrink:0; font-size:.74rem; font-weight:600; color:var(--black) }
+.bar-track{ flex:1; background:#EEF2F1; border-radius:100px; height:10px; overflow:hidden }
+.bar-fill{ height:100%; border-radius:100px }
+.bar-num{ width:40px; flex-shrink:0; text-align:right; font-size:.78rem; font-weight:700 }
+
+.note-box{ background:#FEF2F2; border:1px solid #FECACA; border-radius:12px; padding:14px 18px; margin-top:16px; font-size:.78rem; color:#991B1B; line-height:1.5; }
+
+.toolbar{ display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; align-items:center }
+.search-input{ flex:1; min-width:200px; padding:10px 14px; border-radius:10px; border:1px solid var(--border); font-family:'Poppins',sans-serif; font-size:.82rem; background:var(--white); }
+.filter-pills{ display:flex; gap:6px; flex-wrap:wrap }
+.pill{ padding:6px 14px; border-radius:100px; font-size:.7rem; font-weight:700; border:1px solid var(--border); background:var(--white); cursor:pointer; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; }
+.pill.active{ background:var(--teal); color:var(--white); border-color:var(--teal) }
+
+.table-wrap{ overflow-x:auto; border-radius:16px; border:1px solid var(--border); background:var(--card); box-shadow:var(--shadow) }
+table{ width:100%; border-collapse:collapse; font-size:.78rem; min-width:900px }
+thead th{ text-align:left; padding:12px 14px; background:#FAFBFA; border-bottom:1px solid var(--border); font-size:.64rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; cursor:pointer; white-space:nowrap }
+thead th:hover{ color:var(--black) }
+tbody td{ padding:11px 14px; border-bottom:1px solid var(--border); vertical-align:top }
+tbody tr:hover{ background:#FAFBFA }
+tbody tr:last-child td{ border-bottom:none }
+.badge{ display:inline-block; padding:3px 10px; border-radius:100px; font-size:.64rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; white-space:nowrap }
+.badge-ganhou{ background:#ECFDF5; color:var(--green) }
+.badge-perdeu{ background:#FEF2F2; color:var(--red) }
+.badge-andamento{ background:#EFF6FF; color:var(--blue) }
+.muted-cell{ color:var(--light); font-size:.72rem }
+.sys-error{ color:var(--red); font-weight:700 }
+
+.footer{ text-align:center; padding:32px 24px; font-size:.67rem; color:var(--light); font-weight:400; }
+
+@media(max-width:620px){
+  .header{ padding:0 18px } .wrap{ padding:0 14px 40px } .header-divider{ display:none }
+  .stats-grid{ grid-template-columns:1fr 1fr } .stat{ padding:14px 16px } .stat-value{ font-size:1.3rem }
+  .bar-label{ width:130px; font-size:.66rem }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="arc-inner"></div>
+  <div class="header-inner">
+    <div>
+      <div class="logo-mark">anclive<span>pa</span></div>
+      <div class="tagline">Leads Qualificados</div>
+    </div>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Leads Qualificados <span id="header-period">&middot; todos os periodos</span></div>
+      <div class="header-subtitle">Formulario ECOM &middot; formado = sim &middot; disposto a investir = sim &middot; mora em SP ou disponibilidade de viajar</div>
+      <div class="update-badge">
+        <span class="dot"></span>
+        <span id="last-sync-text">Carregando dados...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="panel" style="margin-top:28px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+    <div style="font-size:.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Periodo</div>
+    <select id="month-select" class="search-input" style="flex:0 0 220px"><option value="all">Todos os periodos</option></select>
+    <select id="week-select" class="search-input" style="flex:0 0 180px" disabled><option value="all">Todas as semanas</option></select>
+    <span class="section-note" id="period-count"></span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-icon" style="background:#E6F4F1">&#128101;</div>
+      <div><div class="stat-label">Total de leads</div><div class="stat-value" id="s-total" style="color:var(--teal)">-</div><div class="stat-sub">qualificados no periodo</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#ECFDF5">&#9989;</div>
+      <div><div class="stat-label">Ganhou</div><div class="stat-value" id="s-ganhou" style="color:var(--green)">-</div><div class="stat-sub" id="s-ganhou-pct">-</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#EFF6FF">&#128311;</div>
+      <div><div class="stat-label">Em andamento</div><div class="stat-value" id="s-andamento" style="color:var(--blue)">-</div><div class="stat-sub" id="s-andamento-pct">-</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#FEF2F2">&#10060;</div>
+      <div><div class="stat-label">Perdeu</div><div class="stat-value" id="s-perdeu" style="color:var(--red)">-</div><div class="stat-sub" id="s-perdeu-pct">-</div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon" style="background:#FFFBEB">&#128200;</div>
+      <div><div class="stat-label">Taxa de Conversao</div><div class="stat-value" id="s-maisqualif" style="color:var(--yellow)">-</div><div class="stat-sub">ganhou / total do periodo</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Evolucao semanal de leads qualificados</span>
+      <span class="section-note">volume por semana, desde o inicio do historico (independente do periodo selecionado acima)</span>
+    </div>
+    <div class="panel" id="evolucao-panel" style="max-height:420px;overflow-y:auto"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Em que etapa esta, no funil</span>
+      <span class="section-note">Comercial Anclivepa, Requalificacao ou Perdidos</span>
+    </div>
+    <div class="panel" id="etapas-panel"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Motivo de perda</span>
+      <span class="section-note">so entre os que perderam</span>
+    </div>
+    <div class="panel" id="motivos-panel"></div>
+    <div class="note-box" id="sys-error-note" style="display:none"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Ranking de criativos</span>
+      <span class="section-note">qual anuncio trouxe os leads qualificados, no periodo selecionado</span>
+    </div>
+    <div class="panel" id="criativos-panel"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Lista completa</span>
+      <span class="section-note" id="table-count">-</span>
+    </div>
+    <div class="toolbar">
+      <input class="search-input" id="search" type="text" placeholder="Buscar por nome, e-mail ou curso...">
+      <div class="filter-pills" id="status-pills">
+        <button class="pill active" data-status="TODOS">Todos</button>
+        <button class="pill" data-status="GANHOU">Ganhou</button>
+        <button class="pill" data-status="EM ANDAMENTO">Em andamento</button>
+        <button class="pill" data-status="PERDEU">Perdeu</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-key="nome">Nome</th>
+            <th data-key="curso">Curso de Interesse</th>
+            <th data-key="status">Status</th>
+            <th data-key="etapa">Etapa / Funil</th>
+            <th data-key="motivo">Motivo de Perda</th>
+            <th data-key="email">E-mail</th>
+            <th data-key="telefone">Telefone</th>
+            <th data-key="carteira">Vendedor</th>
+            <th data-key="codigo_anuncio">Anuncio (Meta Ads)</th>
+            <th data-key="msg_data">Ultimo Contato (RD Conversas)</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">Feito com by Autz &middot; sincronizado automaticamente via RD Marketing + RD CRM Anclivepa</div>
+
+<script>
+var LEADS = [];
+var periodLeads = [];
+var selectedMonth = 'all';
+var selectedWeek = 'all';
+var WEBHOOK_URL = 'https://webhook.autz.com.br/webhook/anclivepa-leads-qualificados';
+var MESES = {'01':'Janeiro','02':'Fevereiro','03':'Marco','04':'Abril','05':'Maio','06':'Junho','07':'Julho','08':'Agosto','09':'Setembro','10':'Outubro','11':'Novembro','12':'Dezembro'};
+var MESES_ABREV = {'01':'jan','02':'fev','03':'mar','04':'abr','05':'mai','06':'jun','07':'jul','08':'ago','09':'set','10':'out','11':'nov','12':'dez'};
+
+const SYS_ERROR_REASONS = ['[SISTEMA] Falha ao enviar Template', '[SISTEMA] ERRO DE DISPARO'];
+
+function pct(part, total) { return total ? (part / total * 100).toFixed(1) : '0.0'; }
+function pctBR(part, total) { return pct(part, total).replace('.', ','); }
+
+function statusBadge(s) {
+  if (s === 'GANHOU') return '<span class="badge badge-ganhou">Ganhou</span>';
+  if (s === 'PERDEU') return '<span class="badge badge-perdeu">Perdeu</span>';
+  return '<span class="badge badge-andamento">Em andamento</span>';
+}
+
+/* CARGA DE DADOS (webhook n8n -> Data Table Anclivepa) */
+function loadData() {
+  fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.text();
+    })
+    .then(function (text) {
+      text = text.trim();
+      LEADS = text ? JSON.parse(text) : [];
+      periodLeads = LEADS;
+      populatePeriodSelectors();
+      updateHeaderMeta();
+      renderAll();
+    })
+    .catch(function (err) {
+      document.getElementById('last-sync-text').textContent = 'Erro ao carregar dados: ' + err.message;
+      document.getElementById('table-count').textContent = 'Nao foi possivel carregar os leads agora. Tente recarregar a pagina.';
+    });
+}
+
+function updateHeaderMeta() {
+  var lastSync = null;
+  LEADS.forEach(function (l) {
+    if (l.sincronizado_em && (!lastSync || l.sincronizado_em > lastSync)) lastSync = l.sincronizado_em;
+  });
+  var syncText = 'Sincronizado automaticamente todo dia as 5h';
+  if (lastSync) {
+    var d = new Date(lastSync);
+    syncText += ' &middot; ultima sincronizacao: ' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+  syncText += ' &middot; RD Marketing + RD CRM Anclivepa';
+  document.getElementById('last-sync-text').innerHTML = syncText;
+}
+
+/* SELETOR DE PERIODO (mes + semana) */
+function populatePeriodSelectors() {
+  var months = {};
+  LEADS.forEach(function (l) { if (l.semana) { var p = l.semana.split('-'); months[p[0] + '-' + p[1]] = true; } });
+  var sorted = Object.keys(months).sort().reverse();
+  var monthSel = document.getElementById('month-select');
+  monthSel.innerHTML = '<option value="all">Todos os periodos</option>' + sorted.map(function (ym) {
+    var p = ym.split('-');
+    return '<option value="' + ym + '">' + (MESES[p[1]] || p[1]) + ' ' + p[0] + '</option>';
+  }).join('');
+  populateWeekSelector('all');
+}
+
+function populateWeekSelector(ym) {
+  var weekSel = document.getElementById('week-select');
+  if (ym === 'all') {
+    weekSel.innerHTML = '<option value="all">Todas as semanas</option>';
+    weekSel.disabled = true;
+    return;
+  }
+  weekSel.disabled = false;
+  var present = {};
+  LEADS.forEach(function (l) { if (l.semana && l.semana.indexOf(ym + '-') === 0) present[l.semana.split('-')[2]] = true; });
+  var order = ['S1', 'S2', 'S3', 'S4', 'S5'];
+  weekSel.innerHTML = '<option value="all">Todas as semanas</option>' + order.filter(function (s) { return present[s]; }).map(function (s) {
+    return '<option value="' + s + '">Semana ' + s.substring(1) + '</option>';
+  }).join('');
+}
+
+function recomputePeriodLeads() {
+  if (selectedMonth === 'all') { periodLeads = LEADS; return; }
+  periodLeads = LEADS.filter(function (l) {
+    if (!l.semana || l.semana.indexOf(selectedMonth + '-') !== 0) return false;
+    if (selectedWeek === 'all') return true;
+    return l.semana === selectedMonth + '-' + selectedWeek;
+  });
+}
+
+function updateHeaderPeriodCaption() {
+  var el = document.getElementById('header-period');
+  if (selectedMonth === 'all') { el.textContent = '· todos os periodos'; return; }
+  var p = selectedMonth.split('-');
+  var label = (MESES[p[1]] || p[1]) + ' ' + p[0];
+  if (selectedWeek !== 'all') label += ', Semana ' + selectedWeek.substring(1);
+  el.textContent = '· ' + label;
+}
+
+function onPeriodChange() {
+  recomputePeriodLeads();
+  updateHeaderPeriodCaption();
+  document.getElementById('period-count').textContent = periodLeads.length + ' lead(s) qualificado(s) chegaram nesse periodo';
+  renderStats();
+  renderEtapas();
+  renderMotivos();
+  renderCriativos();
+  applyFilters();
+}
+
+document.getElementById('month-select').addEventListener('change', function (e) {
+  selectedMonth = e.target.value;
+  selectedWeek = 'all';
+  populateWeekSelector(selectedMonth);
+  onPeriodChange();
+});
+document.getElementById('week-select').addEventListener('change', function (e) {
+  selectedWeek = e.target.value;
+  onPeriodChange();
+});
+
+/* EVOLUCAO SEMANAL (sempre historico completo, ignora filtro) */
+function renderEvolucaoSemanal() {
+  var counts = {};
+  LEADS.forEach(function (l) { if (l.semana) counts[l.semana] = (counts[l.semana] || 0) + 1; });
+  var weeks = Object.keys(counts).sort().reverse();
+  var max = weeks.reduce(function (m, w) { return Math.max(m, counts[w]); }, 1);
+  var el = document.getElementById('evolucao-panel');
+  el.innerHTML = weeks.map(function (w) {
+    var p = w.split('-');
+    var label = (MESES_ABREV[p[1]] || p[1]) + '/' + p[0].substring(2) + ' ' + p[2];
+    var share = (counts[w] / max * 100).toFixed(1);
+    var isSelected = selectedMonth !== 'all' && w.indexOf(selectedMonth + '-') === 0 && (selectedWeek === 'all' || w === selectedMonth + '-' + selectedWeek);
+    var color = isSelected ? 'var(--lime2)' : 'var(--teal)';
+    return '<div class="bar-row">' +
+      '<span class="bar-label">' + label + '</span>' +
+      '<div class="bar-track"><div class="bar-fill" style="width:' + share + '%;background:' + color + '"></div></div>' +
+      '<span class="bar-num">' + counts[w] + '</span>' +
+      '</div>';
+  }).join('');
+}
+
+function renderAll() {
+  recomputePeriodLeads();
+  renderEvolucaoSemanal();
+  renderStats();
+  renderEtapas();
+  renderMotivos();
+  renderCriativos();
+  applyFilters();
+}
+
+function renderStats() {
+  const total = periodLeads.length;
+  const ganhou = periodLeads.filter(l => l.status === 'GANHOU').length;
+  const perdeu = periodLeads.filter(l => l.status === 'PERDEU').length;
+  const andamento = periodLeads.filter(l => l.status === 'EM ANDAMENTO').length;
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-ganhou').textContent = ganhou;
+  document.getElementById('s-ganhou-pct').textContent = pctBR(ganhou, total) + '% do total';
+  document.getElementById('s-andamento').textContent = andamento;
+  document.getElementById('s-andamento-pct').textContent = pctBR(andamento, total) + '% do total';
+  document.getElementById('s-perdeu').textContent = perdeu;
+  document.getElementById('s-perdeu-pct').textContent = pctBR(perdeu, total) + '% do total';
+  document.getElementById('s-maisqualif').textContent = pctBR(ganhou, total) + '%';
+}
+
+function renderBarPanel(containerId, counts, totalForPct, colorFn, tagFn) {
+  const el = document.getElementById(containerId);
+  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  if (!entries.length) { el.innerHTML = '<span class="muted-cell">sem dados nesse periodo</span>'; return; }
+  el.innerHTML = entries.map(([label, count]) => {
+    const share = pct(count, totalForPct);
+    const color = colorFn ? colorFn(label) : 'var(--teal)';
+    const tag = tagFn ? tagFn(label) : '';
+    return '<div class="bar-row">' +
+      '<span class="bar-label">' + label + (tag ? ' ' + tag : '') + '</span>' +
+      '<div class="bar-track"><div class="bar-fill" style="width:' + share + '%;background:' + color + '"></div></div>' +
+      '<span class="bar-num">' + count + '</span>' +
+      '</div>';
+  }).join('');
+}
+
+function renderEtapas() {
+  const counts = {};
+  periodLeads.forEach(l => { const k = (l.etapa || '(sem etapa)') + ' (' + (l.funil || 'sem funil') + ')'; counts[k] = (counts[k] || 0) + 1; });
+  renderBarPanel('etapas-panel', counts, periodLeads.length, (label) => {
+    if (label.indexOf('Desqualificados') === 0) return 'var(--red)';
+    if (label.indexOf('Concluido') === 0) return 'var(--green)';
+    if (label.indexOf('Requalifica') >= 0) return 'var(--yellow)';
+    return 'var(--blue)';
+  });
+}
+
+function renderMotivos() {
+  const perdidos = periodLeads.filter(l => l.status === 'PERDEU');
+  const counts = {};
+  perdidos.forEach(l => { const k = l.motivo || '(sem motivo)'; counts[k] = (counts[k] || 0) + 1; });
+  renderBarPanel('motivos-panel', counts, perdidos.length, (label) => SYS_ERROR_REASONS.indexOf(label) >= 0 ? 'var(--red)' : 'var(--orange)',
+    (label) => SYS_ERROR_REASONS.indexOf(label) >= 0 ? '<span class="sys-error">(erro de sistema)</span>' : '');
+
+  const sysErrorCount = perdidos.filter(l => SYS_ERROR_REASONS.indexOf(l.motivo) >= 0).length;
+  const noteEl = document.getElementById('sys-error-note');
+  if (sysErrorCount > 0) {
+    noteEl.style.display = 'block';
+    noteEl.innerHTML = '<strong>' + sysErrorCount + ' perda(s) por erro de sistema</strong> (falha ao enviar template / erro de disparo) - nao foi o lead que desistiu, foi uma falha nossa de automacao. Vale reabrir essas negociacoes.';
+  } else {
+    noteEl.style.display = 'none';
+  }
+}
+
+function normalizeCriativo(code) {
+  if (!code) return null;
+  return code.replace(/\s*-?\s*\d{1,2}\/\d{1,2}\/\d{2,4}\s*$/, '').trim();
+}
+
+function renderCriativos() {
+  const counts = {};
+  periodLeads.forEach(l => {
+    const base = normalizeCriativo(l.codigo_anuncio) || '(sem anuncio registrado)';
+    counts[base] = (counts[base] || 0) + 1;
+  });
+  renderBarPanel('criativos-panel', counts, periodLeads.length, () => 'var(--teal)');
+}
+
+let currentFilter = 'TODOS';
+let currentSort = { key: null, dir: 1 };
+
+function applyFilters() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  let rows = periodLeads.filter(l => {
+    if (currentFilter === 'TODOS') return true;
+    return l.status === currentFilter;
+  });
+  if (q) {
+    rows = rows.filter(l => (l.nome || '').toLowerCase().indexOf(q) >= 0 || (l.email || '').toLowerCase().indexOf(q) >= 0 || (l.curso || '').toLowerCase().indexOf(q) >= 0);
+  }
+  if (currentSort.key) {
+    rows = rows.slice().sort((a, b) => {
+      const av = (a[currentSort.key] || '').toString().toLowerCase();
+      const bv = (b[currentSort.key] || '').toString().toLowerCase();
+      return av < bv ? -currentSort.dir : av > bv ? currentSort.dir : 0;
+    });
+  }
+  renderTable(rows);
+  document.getElementById('table-count').textContent = rows.length + ' de ' + periodLeads.length + ' leads';
+}
+
+function contatoCell(l) {
+  if (!l.msg_data) return '<span class="muted-cell">sem ultima mensagem registrada</span>';
+  const d = new Date(l.msg_data);
+  const fmt = d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'}) + ' ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  return fmt + '<br><span class="muted-cell" style="font-style:italic">“' + (l.msg_texto || '') + '”</span>';
+}
+
+function renderTable(rows) {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = rows.map(l => {
+    const motivoCell = l.motivo ? (SYS_ERROR_REASONS.indexOf(l.motivo) >= 0 ? '<span class="sys-error">' + l.motivo + '</span>' : l.motivo) : '<span class="muted-cell">-</span>';
+    return '<tr>' +
+      '<td>' + (l.nome || '<span class="muted-cell">-</span>') + '</td>' +
+      '<td class="muted-cell">' + (l.curso || '-') + '</td>' +
+      '<td>' + statusBadge(l.status) + '</td>' +
+      '<td class="muted-cell">' + (l.etapa || 'sem etapa') + '<br>' + (l.funil || 'sem funil') + '</td>' +
+      '<td>' + motivoCell + '</td>' +
+      '<td class="muted-cell">' + (l.email || '-') + '</td>' +
+      '<td class="muted-cell">' + (l.telefone || '-') + '</td>' +
+      '<td class="muted-cell">' + (l.carteira || 'sem carteira') + '</td>' +
+      '<td class="muted-cell">' + (l.codigo_anuncio || 'n/d') + '</td>' +
+      '<td class="muted-cell">' + contatoCell(l) + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+document.getElementById('search').addEventListener('input', applyFilters);
+document.querySelectorAll('.pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.getAttribute('data-status');
+    applyFilters();
+  });
+});
+document.querySelectorAll('thead th').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.getAttribute('data-key');
+    currentSort.dir = (currentSort.key === key) ? -currentSort.dir : 1;
+    currentSort.key = key;
+    applyFilters();
+  });
+});
+
+loadData();
+</script>
+
+</body>
+</html>
