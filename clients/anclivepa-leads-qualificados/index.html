@@ -247,7 +247,7 @@ function statusBadge(s) {
   return '<span class="badge badge-andamento">Em andamento</span>';
 }
 
-/* CARGA DE DADOS (webhook n8n -> Data Table Anclivepa) */
+/* ═══════════ CARGA DE DADOS (webhook n8n -> Data Table Anclivepa) ═══════════ */
 function loadData() {
   fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
     .then(function (res) {
@@ -265,6 +265,7 @@ function loadData() {
     .catch(function (err) {
       document.getElementById('last-sync-text').textContent = 'Erro ao carregar dados: ' + err.message;
       document.getElementById('table-count').textContent = 'Nao foi possivel carregar os leads agora. Tente recarregar a pagina.';
+      document.getElementById('period-count').textContent = 'Erro ao carregar - filtro de periodo indisponivel.';
     });
 }
 
@@ -282,7 +283,9 @@ function updateHeaderMeta() {
   document.getElementById('last-sync-text').innerHTML = syncText;
 }
 
-/* SELETOR DE PERIODO (mes + semana) */
+/* ═══════════ SELETOR DE PERIODO (mes + semana fixa S1-S5) ═══════════ */
+var WEEK_OPTIONS = ['S1', 'S2', 'S3', 'S4', 'S5'];
+
 function populatePeriodSelectors() {
   var months = {};
   LEADS.forEach(function (l) { if (l.semana) { var p = l.semana.split('-'); months[p[0] + '-' + p[1]] = true; } });
@@ -292,23 +295,27 @@ function populatePeriodSelectors() {
     var p = ym.split('-');
     return '<option value="' + ym + '">' + (MESES[p[1]] || p[1]) + ' ' + p[0] + '</option>';
   }).join('');
-  populateWeekSelector('all');
+  populateWeekSelector();
+
+  if (sorted.length) {
+    selectedMonth = sorted[0];
+    var weeksThisMonth = {};
+    LEADS.forEach(function (l) { if (l.semana && l.semana.indexOf(selectedMonth + '-') === 0) weeksThisMonth[l.semana.split('-')[2]] = true; });
+    var mostRecentWeek = 'all';
+    for (var i = WEEK_OPTIONS.length - 1; i >= 0; i--) { if (weeksThisMonth[WEEK_OPTIONS[i]]) { mostRecentWeek = WEEK_OPTIONS[i]; break; } }
+    selectedWeek = mostRecentWeek;
+    monthSel.value = selectedMonth;
+    document.getElementById('week-select').disabled = false;
+    document.getElementById('week-select').value = selectedWeek;
+  }
 }
 
-function populateWeekSelector(ym) {
+function populateWeekSelector() {
   var weekSel = document.getElementById('week-select');
-  if (ym === 'all') {
-    weekSel.innerHTML = '<option value="all">Todas as semanas</option>';
-    weekSel.disabled = true;
-    return;
-  }
-  weekSel.disabled = false;
-  var present = {};
-  LEADS.forEach(function (l) { if (l.semana && l.semana.indexOf(ym + '-') === 0) present[l.semana.split('-')[2]] = true; });
-  var order = ['S1', 'S2', 'S3', 'S4', 'S5'];
-  weekSel.innerHTML = '<option value="all">Todas as semanas</option>' + order.filter(function (s) { return present[s]; }).map(function (s) {
+  weekSel.innerHTML = '<option value="all">Todas as semanas</option>' + WEEK_OPTIONS.map(function (s) {
     return '<option value="' + s + '">Semana ' + s.substring(1) + '</option>';
   }).join('');
+  weekSel.disabled = (selectedMonth === 'all');
 }
 
 function recomputePeriodLeads() {
@@ -343,7 +350,8 @@ function onPeriodChange() {
 document.getElementById('month-select').addEventListener('change', function (e) {
   selectedMonth = e.target.value;
   selectedWeek = 'all';
-  populateWeekSelector(selectedMonth);
+  populateWeekSelector();
+  document.getElementById('week-select').value = 'all';
   onPeriodChange();
 });
 document.getElementById('week-select').addEventListener('change', function (e) {
@@ -351,7 +359,7 @@ document.getElementById('week-select').addEventListener('change', function (e) {
   onPeriodChange();
 });
 
-/* EVOLUCAO SEMANAL (sempre historico completo, ignora filtro) */
+/* ═══════════ EVOLUCAO SEMANAL (sempre historico completo, ignora filtro) ═══════════ */
 function renderEvolucaoSemanal() {
   var counts = {};
   LEADS.forEach(function (l) { if (l.semana) counts[l.semana] = (counts[l.semana] || 0) + 1; });
@@ -374,6 +382,8 @@ function renderEvolucaoSemanal() {
 
 function renderAll() {
   recomputePeriodLeads();
+  updateHeaderPeriodCaption();
+  document.getElementById('period-count').textContent = periodLeads.length + ' lead(s) qualificado(s) chegaram nesse periodo';
   renderEvolucaoSemanal();
   renderStats();
   renderEtapas();
