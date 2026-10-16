@@ -218,7 +218,8 @@ const LEADS = [{"nome":"Arthur Macário Lopes","email":"arthurmacario5@gmail.com
 
 const SYS_ERROR_REASONS = ['[SISTEMA] Falha ao enviar Template', '[SISTEMA] ERRO DE DISPARO'];
 
-function pct(part, total) { return total ? (part / total * 100).toFixed(1).replace('.', ',') : '0,0'; }
+function pct(part, total) { return total ? (part / total * 100).toFixed(1) : '0.0'; }
+function pctBR(part, total) { return pct(part, total).replace('.', ','); }
 
 function statusBadge(s) {
   if (s === 'GANHOU') return '<span class="badge badge-ganhou">Ganhou</span>';
@@ -234,11 +235,11 @@ function renderStats() {
   const maisQualif = LEADS.filter(l => l.tempo === 'imediato' && l.sp === 'tenho_disponibilidade_pra_viajar').length;
   document.getElementById('s-total').textContent = total;
   document.getElementById('s-ganhou').textContent = ganhou;
-  document.getElementById('s-ganhou-pct').textContent = pct(ganhou, total) + '% do total';
+  document.getElementById('s-ganhou-pct').textContent = pctBR(ganhou, total) + '% do total';
   document.getElementById('s-andamento').textContent = andamento;
-  document.getElementById('s-andamento-pct').textContent = pct(andamento, total) + '% do total';
+  document.getElementById('s-andamento-pct').textContent = pctBR(andamento, total) + '% do total';
   document.getElementById('s-perdeu').textContent = perdeu;
-  document.getElementById('s-perdeu-pct').textContent = pct(perdeu, total) + '% do total';
+  document.getElementById('s-perdeu-pct').textContent = pctBR(perdeu, total) + '% do total';
   document.getElementById('s-maisqualif').textContent = maisQualif;
 }
 
