@@ -15,6 +15,7 @@ const CLIENTS = [
   { slug: 'reforma-tributaria', path: '/reforma-tributaria', envPrefix: 'REFORMATRIBUTARIA' },
   { slug: 'financeiro', path: '/financeiro', envPrefix: 'FINANCEIRO' },
   { slug: 'anclivepa-leads-qualificados', path: '/anclivepa-leads-qualificados', envPrefix: 'ANCLIVEPALEADS' },
+  { slug: 'dash-comercial-cplay', path: '/dash-comercial-cplay', envPrefix: 'CPLAYCOMERCIAL', optional: true },
 ];
 
 const app = express();
@@ -26,6 +27,11 @@ CLIENTS.forEach((client) => {
   const password = process.env[`${client.envPrefix}_PASSWORD`];
 
   if (!user || !password) {
+    // optional: cliente novo ainda sem env vars no Portainer nao derruba os demais
+    if (client.optional) {
+      console.warn(`Pulando ${client.slug}: defina ${client.envPrefix}_USER e ${client.envPrefix}_PASSWORD no stack.`);
+      return;
+    }
     throw new Error(`Defina ${client.envPrefix}_USER e ${client.envPrefix}_PASSWORD (.env) para o cliente ${client.slug}.`);
   }
 
