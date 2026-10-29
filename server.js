@@ -16,7 +16,7 @@ const CLIENTS = [
   { slug: 'financeiro', path: '/financeiro', envPrefix: 'FINANCEIRO' },
   { slug: 'anclivepa-leads-qualificados', path: '/anclivepa-leads-qualificados', envPrefix: 'ANCLIVEPALEADS' },
   { slug: 'dash-comercial-cplay', path: '/dash-comercial-cplay', envPrefix: 'CPLAYCOMERCIAL', optional: true },
-  { slug: 'tarefas-tv', path: '/tarefas-tv', envPrefix: 'TAREFASTV', optional: true },
+  { slug: 'tarefas-tv', path: '/tarefas-tv', public: true },
 ];
 
 const app = express();
@@ -24,6 +24,12 @@ const app = express();
 app.get('/healthz', (req, res) => res.send('ok'));
 
 CLIENTS.forEach((client) => {
+  // public: painel de TV, sem login (so contagens por projeto e pessoa, sem dados de contato)
+  if (client.public) {
+    app.use(client.path, express.static(path.join(__dirname, 'clients', client.slug)));
+    return;
+  }
+
   const user = process.env[`${client.envPrefix}_USER`];
   const password = process.env[`${client.envPrefix}_PASSWORD`];
 
