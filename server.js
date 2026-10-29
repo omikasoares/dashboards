@@ -16,6 +16,7 @@ const CLIENTS = [
   { slug: 'financeiro', path: '/financeiro', envPrefix: 'FINANCEIRO' },
   { slug: 'anclivepa-leads-qualificados', path: '/anclivepa-leads-qualificados', envPrefix: 'ANCLIVEPALEADS' },
   { slug: 'dash-comercial-cplay', path: '/dash-comercial-cplay', envPrefix: 'CPLAYCOMERCIAL', optional: true },
+  { slug: 'tarefas-tv', path: '/tarefas-tv', envPrefix: 'TAREFASTV', optional: true },
 ];
 
 const app = express();
