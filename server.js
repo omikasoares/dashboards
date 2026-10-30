@@ -26,6 +26,24 @@ app.get('/healthz', (req, res) => res.send('ok'));
 CLIENTS.forEach((client) => {
   // public: painel de TV, sem login (so contagens por projeto e pessoa, sem dados de contato)
   if (client.public) {
+    // TV antiga nao confia no certificado de outros hosts: os dados passam pelo mesmo host da pagina
+    if (client.slug === 'tarefas-tv') {
+      let cache = { at: 0, body: null };
+      app.get(client.path + '/dados', async (req, res) => {
+        res.set('Cache-Control', 'no-store').type('application/json');
+        try {
+          if (!cache.body || Date.now() - cache.at > 60000) {
+            const r = await fetch('https://webhook.autz.com.br/webhook/tarefas-tv-dados-k7q2', { signal: AbortSignal.timeout(20000) });
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            cache = { at: Date.now(), body: await r.text() };
+          }
+          res.send(cache.body);
+        } catch (e) {
+          if (cache.body) return res.send(cache.body);
+          res.status(502).send('{"erro":"origem indisponivel"}');
+        }
+      });
+    }
     app.use(client.path, express.static(path.join(__dirname, 'clients', client.slug)));
     return;
   }
